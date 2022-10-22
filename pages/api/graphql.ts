@@ -68,38 +68,46 @@ interface Pokemon {
 }
 
 interface IPokemonApi {
-  allPokemon: () => Promise<Pokemon[]>
+  allPokemon: (params: PaginationParams) => Promise<Pokemon[]>
   allPokemonByType: (type: string) => Promise<PokemonTypeObj[]>
-  pokemonTypesList: () => Promise<Result[]>
-  pokemonSpeciesList: () => Promise<Result[]>
+  allPokemonTypes: (params: PaginationParams) => Promise<Result[]>
+  allPokemonSpecies: (params: PaginationParams) => Promise<Result[]>
+}
+
+interface PaginationParams {
+  offset: number
+  limit: number
 }
 
 class PokemonApi implements IPokemonApi {
-  private resources = {
-    Pokemon: 'pokemon',
-    Species: 'pokemon-species',
-    Type: 'type',
-  }
-  baseUrl: string
+  private resources: Record<string, string>
+  private baseUrl: string
   constructor() {
     this.baseUrl = BASE_URL
+    this.resources = {
+      Pokemon: 'pokemon',
+      Species: 'pokemon-species',
+      Type: 'type',
+    }
   }
 
+  getFetchPaginationUrl({
+    resource,
+    offset,
+    limit = 20,
+  }: { resource: string } & PaginationParams) {
+    return `${this.baseUrl}${resource}?offset=${offset}&limit=${limit}`
+  }
   private getId(result: Result) {
     return result.url.split('/')[result.url.split('/').length - 2]
   }
 
-  private getUrl({ resource, limit, id }: any) {
-    return `${BASE_URL}${resource}${
-      id ? `${id && `/${id}`}` : `${limit && `?limit=${limit}`}`
-    }`
-  }
-
-  async allPokemon() {
+  async allPokemon({ offset, limit }: PaginationParams) {
     const { results } = await fetchPokemonApi<AllPokemonResponse>(
-      this.getUrl({
+      this.getFetchPaginationUrl({
         resource: this.resources.Pokemon,
-        limit: POKEMON_TYPE_COUNT,
+        offset,
+        limit,
       })
     )
     return results.map((result: Result) => {
@@ -107,8 +115,8 @@ class PokemonApi implements IPokemonApi {
       return { id, ...result }
     })
   }
+
   async allPokemonByType(type: string) {
-    console.log('CAN I GET THE TYPE', type)
     const { pokemon } = await fetchPokemonApi<AllPokemonByTypeResponse>(
       getUrl({
         resource: this.resources.Type,
@@ -117,7 +125,7 @@ class PokemonApi implements IPokemonApi {
     )
     return pokemon
   }
-  async pokemonTypesList() {
+  async allPokemonTypes() {
     const { results } = await fetchPokemonApi<{ results: Result[] }>(
       getUrl({
         resource: this.resources.Type,
@@ -129,7 +137,7 @@ class PokemonApi implements IPokemonApi {
       return { id, ...result }
     })
   }
-  async pokemonSpeciesList() {
+  async allPokemonSpecies() {
     const { results } = await fetchPokemonApi<{ results: Result[] }>(
       getUrl({
         resource: this.resources.Species,
@@ -145,11 +153,11 @@ class PokemonApi implements IPokemonApi {
 
 const typeDefs = `
   type Query {
-    allPokemon: [Pokemon!]!
+    allPokemon(offset: Int!, limit: Int): [Pokemon!]!
     allPokemonByType(type: String!): [PokemonByTypeObject!]!
+    allPokemonTypes(offset: Int!, limit: Int): [Result!]!
+    allPokemonSpecies(offset: Int!, limit: Int): [Result!]!
     pokemonById(id: ID!): Pokemon
-    pokemonTypesList: [Result!]!
-    pokemonSpeciesList: [Result!]!
   }
 
   type Pokemon {
@@ -192,8 +200,12 @@ const typeDefs = `
 `
 const resolvers = {
   Query: {
-    allPokemon: async (_, __, { PokemonApi }: { PokemonApi: IPokemonApi }) => {
-      return await PokemonApi.allPokemon()
+    allPokemon: async (
+      _,
+      { offset, limit },
+      { PokemonApi }: { PokemonApi: IPokemonApi }
+    ) => {
+      return await PokemonApi.allPokemon({ offset, limit })
     },
     allPokemonByType: async (
       _,
@@ -210,19 +222,19 @@ const resolvers = {
       const { id } = args
       return await pokemonDataLoader.load(Number(id))
     },
-    pokemonTypesList: async (
+    allPokemonTypes: async (
       _: null,
-      args,
+      { offset, limit },
       { PokemonApi }: { PokemonApi: IPokemonApi }
     ) => {
-      return await PokemonApi.pokemonTypesList()
+      return await PokemonApi.allPokemonTypes({ offset, limit })
     },
-    pokemonSpeciesList: async (
+    allPokemonSpecies: async (
       _: null,
-      args,
+      { offset, limit },
       { PokemonApi }: { PokemonApi: IPokemonApi }
     ) => {
-      return await PokemonApi.pokemonSpeciesList()
+      return await PokemonApi.allPokemonSpecies({ offset, limit })
     },
   },
   Pokemon: {
