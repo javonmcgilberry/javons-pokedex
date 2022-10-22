@@ -1,5 +1,6 @@
 {
   "plugins": ["@typescript-eslint"],
+  "globals": { "React": true },
   "extends": [
     "next/core-web-vitals",
     "plugin:jest-dom/recommended",

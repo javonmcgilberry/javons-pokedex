@@ -12,6 +12,11 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@envelop/response-cache": "^4.0.2",
+    "@graphql-yoga/node": "^2.13.13",
+    "@graphql-yoga/plugin-response-cache": "^1.0.0-canary-86cfcf6.0",
+    "dataloader": "^2.1.0",
+    "graphql": "^16.6.0",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
