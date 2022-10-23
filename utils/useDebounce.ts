@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-
-// Hook
 function useDebounce(val: unknown, delayTime: number) {
   const [debouncedVal, setDebouncedVal] = useState(val)
   useEffect(() => {

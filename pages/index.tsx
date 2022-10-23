@@ -1,9 +1,15 @@
+import AutoCompleteSearch from '@pokedex/components/AutoCompleteSearch/AutoCompleteSearch'
+import Header from '@pokedex/components/Header/Header'
 import {
   GetPokemonByNameOrIdQuery,
   useGetAllPokemonNamesQuery,
   useGetAllPokemonQuery,
   useGetPokemonByNameOrIdQuery,
 } from '@pokedex/generated/graphql-hooks'
+import useActivePokemon from '@pokedex/hooks/useActivePokemon'
+import useAutoCompleteSearch from '@pokedex/hooks/useAutoCompleteSearch'
+import usePokemonBackgroundColor from '@pokedex/hooks/usePokemonBackgroundColor'
+import PokemonDataModel from '@pokedex/models/PokemonDataModel'
 import { getSearchResults } from '@pokedex/utils/helpers'
 import useDebounce from '@pokedex/utils/useDebounce'
 import Image from 'next/image'
@@ -14,60 +20,6 @@ import React, {
   ChangeEvent,
   useRef,
 } from 'react'
-
-const Header = ({ render }: { render: () => React.ReactNode }) => {
-  return (
-    <div className="fixed flex w-full items-center justify-between bg-white p-4">
-      <div>
-        <Image
-          src="/pokemon_logo.svg"
-          alt="pokemon-logo"
-          width={120}
-          height={60}
-        />
-      </div>
-      {render()}
-    </div>
-  )
-}
-
-class Pokemon {
-  constructor(private pokemon: GetPokemonByNameOrIdQuery['pokemonById']) {}
-
-  private getTypeColor(type: string | undefined) {
-    return `bg-${type}`
-  }
-
-  get name() {
-    return this.pokemon?.name
-  }
-
-  get stats() {
-    return this.pokemon?.stats
-  }
-
-  get image() {
-    return this.pokemon?.sprites.other?.home?.front_default as string
-  }
-
-  get types() {
-    return this.pokemon?.types
-  }
-
-  get typeColor() {
-    if (this.pokemon?.types) {
-      return this.getTypeColor(this.pokemon?.types[0].type?.name)
-    }
-  }
-
-  get typeIcons() {
-    if (this.pokemon?.types) {
-      return this.pokemon?.types.map(
-        (typeObj) => `/assets/icons/${typeObj.type?.name}.svg`
-      )
-    }
-  }
-}
 
 const SearchInput = ({ value, onChange, onSelectPokemon }) => {
   const { data, isLoading } = useGetAllPokemonNamesQuery()
@@ -109,28 +61,30 @@ const PokemonPanel = ({
   pokemon: GetPokemonByNameOrIdQuery['pokemonById']
   isLoading: boolean
 }) => {
-  const currentColor = useRef('')
-  const nextColor = useRef()
-  const pokeData = new Pokemon(pokemon)
-  const [panelColor, setPanelColor] = useState(pokeData.typeColor)
-  currentColor.current = pokeData.typeColor as string
-
+  const pokemonData = new PokemonDataModel(pokemon)
+  const currentColor = usePokemonBackgroundColor(pokemonData)
   return (
     <div>
-      {' '}
       <div
-        className={`mx-auto max-w-7xl ${currentColor.current} px-4 pt-32 sm:px-6 lg:px-8`}
+        className={`mx-auto max-w-7xl ${currentColor} px-4 pt-32 sm:px-6 lg:px-8`}
       >
-        {pokeData?.name}
+        {pokemonData?.name}
 
-        {pokeData.typeIcons?.map((icon) => (
-          <Image key={icon} src={icon} alt={icon} width={40} height={40} />
+        {pokemonData.typeIcons?.map((icon) => (
+          <Image
+            className="m-8 p-8 drop-shadow-sm"
+            key={icon}
+            src={icon}
+            alt={icon}
+            width={40}
+            height={40}
+          />
         ))}
         <Image
-          src={pokeData?.image}
+          src={pokemonData?.image}
           width={400}
           height={400}
-          alt={pokeData.name}
+          alt={pokemonData.name}
           quality={100}
         />
       </div>
@@ -139,44 +93,23 @@ const PokemonPanel = ({
 }
 
 export default function Home() {
-  const [offset, setOffset] = useState(0)
-  const [activePokemon, setActivePokemon] = useState('1')
-  const { data, isLoading } = useGetPokemonByNameOrIdQuery({
-    id: activePokemon,
-  })
-  const [value, setValue] = useState('')
-
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }, [])
-
-  const handleSelectPokemon = useCallback((value: string) => {
-    setActivePokemon(value)
-    setValue('')
-  }, [])
-
-  useEffect(() => {
-    if (data) {
-      console.log('selected Pokemon', data.pokemonById)
-    }
-  }, [data])
-
+  const { handleSetActivePokemon, data, isLoading } = useActivePokemon()
   return (
     <div>
       <Header
         render={() => (
-          <SearchInput
-            value={value}
-            onChange={handleChange}
-            onSelectPokemon={handleSelectPokemon}
-          />
+          <AutoCompleteSearch handleSetActivePokemon={handleSetActivePokemon} />
+          // <SearchInput
+          //   value={value}
+          //   onChange={handleChange}
+          //   onSelectPokemon={handleSelectPokemon}
+          // />
         )}
       />
       <PokemonPanel pokemon={data?.pokemonById} isLoading={isLoading} />
 
       <div className="mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:px-8">
-        {/* <PokemonPanel pokemon={data?.pokemonById} isLoading={isLoading} /> */}
-
+        <AutoCompleteSearch handleSetActivePokemon={handleSetActivePokemon} />
         <div className="mt-10 space-y-10 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10 md:space-y-0">
           <div className="cursor-pointer rounded-md bg-amber-500 p-4 text-center text-white shadow-xl">
             <div className="mt-2 font-bold">John Doe</div>

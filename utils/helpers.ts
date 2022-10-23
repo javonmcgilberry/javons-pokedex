@@ -8,7 +8,7 @@ export const getSearchResults = (
     data
       ?.map(({ name }) => name)
       .filter((pokemon: string) => {
-        if (pokemon.includes(value.toLowerCase())) {
+        if (pokemon.includes(value?.toLowerCase())) {
           return true
         }
       })
