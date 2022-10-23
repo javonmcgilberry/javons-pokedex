@@ -1,37 +1,24 @@
-type PaginationRequest = (params: PaginationParams) => Promise<Result[]>
-
-type PokemonTypeObj = Omit<Pokemon, 'id'>
-
-interface Pokemon {
-  id?: string
-  name: string
-  url: string
-}
-
-export interface Result {
-  name: string
-  url: string
-}
+import { InputMaybe } from '../generated/graphql-types'
+import { IPokemon, IPokemonByTypeObject, IResult } from '../models'
 
 export interface AllPokemonResponse {
   count: number
   next: string
   previous: string
-  results: Result[]
+  results: IResult[]
 }
 
 export interface AllPokemonByTypeResponse {
-  pokemon: PokemonTypeObj[]
-}
-
-export interface IPokemonApi {
-  allPokemon: (params: PaginationParams) => Promise<Pokemon[]>
-  allPokemonByType: (type: string) => Promise<PokemonTypeObj[]>
-  allPokemonTypes: PaginationRequest
-  allPokemonSpecies: PaginationRequest
+  pokemon: IPokemonByTypeObject[]
 }
 
 export interface PaginationParams {
   offset: number
-  limit: number
+  limit?: InputMaybe<number> | undefined
+}
+
+export interface URLParams {
+  resource: string
+  limit?: string
+  id: string
 }

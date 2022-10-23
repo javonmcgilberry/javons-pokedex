@@ -1,0 +1,7 @@
+type Query {
+  allPokemon(offset: Int!, limit: Int): [Pokemon!]!
+  allPokemonByType(type: String!): [PokemonByTypeObject!]!
+  allPokemonTypes(offset: Int!, limit: Int): [Result!]!
+  allPokemonSpecies(offset: Int!, limit: Int): [Result!]!
+  pokemonById(id: ID!): Pokemon
+}

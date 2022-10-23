@@ -1,0 +1,69 @@
+type Query {
+  allPokemon(offset: Int!, limit: Int): [Pokemon!]!
+  allPokemonByType(type: String!): [PokemonByTypeObject!]!
+  allPokemonTypes(offset: Int!, limit: Int): [Result!]!
+  allPokemonSpecies(offset: Int!, limit: Int): [Result!]!
+  pokemonById(id: ID!): Pokemon
+}
+
+type Pokemon {
+  id: ID!
+  name: String!
+  types: [PokemonTypes!]
+  stats: [PokemonStats!]
+  sprites: Sprites!
+}
+
+type PokemonTypes {
+  slot: Int!
+  type: PokemonTypeDetails
+}
+
+type PokemonStats {
+  base_stat: Int!
+  effort: Int!
+  stat: PokemonStat
+}
+
+type PokemonStat {
+  name: String!
+  url: String!
+}
+
+type Sprites {
+  back_default: String
+  back_female: String
+  back_shiny: String
+  back_shiny_female: String
+  front_default: String
+  front_female: String
+  front_shiny: String
+  front_shiny_female: String
+  other: OtherSprites
+}
+
+type OtherSprites {
+  home: Home
+}
+
+type Home {
+  front_default: String
+  front_female: String
+  front_shiny: String
+  front_shiny_female: String
+}
+
+type PokemonTypeDetails {
+  name: String!
+  url: String!
+}
+
+type Result {
+  name: String!
+  url: String!
+  id: String
+}
+
+type PokemonByTypeObject {
+  pokemon: Result
+}

@@ -1,0 +1,19 @@
+schema: schema.graphql
+generates:
+  generated/graphql-types.ts:
+    plugins:
+      - '@graphql-codegen/typescript'
+      - '@graphql-codegen/typescript-resolvers'
+    config:
+      contextType: ../models#GraphQLContext
+      mappers:
+        Pokemon: '../models#IPokemon'
+        PokemonTypes: '../models#IPokemonTypes'
+        PokemonStats: '../models#IPokemonStats'
+        PokemonStat: '../models#IPokemonStat'
+        Sprites: '../models#ISprites'
+        OtherSprites: '../models#IOtherSprites'
+        Home: '../models#IHome'
+        PokemonByTypeObject: '../models#IPokemonByTypeObject'
+        PokemonTypeDetails: '../models#IPokemonTypeDetails'
+        Result: '../models#IResult'

@@ -1,9 +1,0 @@
-type Query {
-  allPokemon: [Pokemon!]!
-  getPokemonById(id: ID!): Pokemon
-}
-
-type Pokemon {
-  id: ID!
-  name: String!
-}
