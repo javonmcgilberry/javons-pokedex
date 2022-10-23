@@ -1,10 +1,12 @@
 module.exports = {
+  mode: 'jit',
   content: [
     // add this lines
     './pages/**/*.{js,ts,jsx,tsx}',
     // if you have other folder, add its path too, like this:
     './components/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: [{ pattern: /bg-./ }],
   theme: {
     extend: {
       colors: {

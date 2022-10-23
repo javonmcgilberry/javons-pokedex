@@ -8,9 +8,10 @@ export const getSearchResults = (
     data
       ?.map(({ name }) => name)
       .filter((pokemon: string) => {
-        if (pokemon.includes(value)) {
+        if (pokemon.includes(value.toLowerCase())) {
           return true
         }
-      }) ?? []
+      })
+      .slice(0, 10) ?? []
   )
 }

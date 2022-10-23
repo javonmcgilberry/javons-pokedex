@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 // Hook
-function useDebounce(val: string, delayTime: number) {
+function useDebounce(val: unknown, delayTime: number) {
   const [debouncedVal, setDebouncedVal] = useState(val)
   useEffect(() => {
     const handler = setTimeout(() => {
