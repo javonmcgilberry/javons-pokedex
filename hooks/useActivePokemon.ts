@@ -1,5 +1,5 @@
 import { useGetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 
 const useActivePokemon = () => {
   const [activePokemon, setActivePokemon] = useState('1')
@@ -8,14 +8,9 @@ const useActivePokemon = () => {
   })
 
   const handleSetActivePokemon = useCallback((id: string) => {
-    setActivePokemon(id)
+    // POKEMON NAME MUST be lowercase.
+    setActivePokemon(id.toLowerCase())
   }, [])
-
-  useEffect(() => {
-    if (data) {
-      console.log('selected Pokemon', data.pokemonById)
-    }
-  }, [data])
 
   return { handleSetActivePokemon, data, isLoading }
 }
