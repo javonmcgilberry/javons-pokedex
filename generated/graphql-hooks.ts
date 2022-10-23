@@ -168,6 +168,46 @@ export type GetAllPokemonQuery = {
   }>
 }
 
+export type GetAllPokemonNamesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllPokemonNamesQuery = {
+  __typename?: 'Query'
+  allPokemonSpecies: Array<{ __typename?: 'Result'; name: string }>
+}
+
+export type GetPokemonByNameOrIdQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type GetPokemonByNameOrIdQuery = {
+  __typename?: 'Query'
+  pokemonById?: {
+    __typename?: 'Pokemon'
+    id: string
+    name: string
+    sprites: {
+      __typename?: 'Sprites'
+      other?: {
+        __typename?: 'OtherSprites'
+        home?: {
+          __typename?: 'Home'
+          front_default?: string | null
+          front_shiny?: string | null
+        } | null
+      } | null
+    }
+    stats?: Array<{
+      __typename?: 'PokemonStats'
+      base_stat: number
+      stat?: { __typename?: 'PokemonStat'; name: string } | null
+    }> | null
+    types?: Array<{
+      __typename?: 'PokemonTypes'
+      type?: { __typename?: 'PokemonTypeDetails'; name: string } | null
+    }> | null
+  } | null
+}
+
 export const GetAllPokemonDocument = `
     query GetAllPokemon($offset: Int!, $limit: Int) {
   allPokemon(offset: $offset, limit: $limit) {
@@ -200,6 +240,72 @@ export const useGetAllPokemonQuery = <
     ['GetAllPokemon', variables],
     fetcher<GetAllPokemonQuery, GetAllPokemonQueryVariables>(
       GetAllPokemonDocument,
+      variables
+    ),
+    options
+  )
+export const GetAllPokemonNamesDocument = `
+    query GetAllPokemonNames {
+  allPokemonSpecies(offset: 0, limit: 905) {
+    name
+  }
+}
+    `
+export const useGetAllPokemonNamesQuery = <
+  TData = GetAllPokemonNamesQuery,
+  TError = unknown
+>(
+  variables?: GetAllPokemonNamesQueryVariables,
+  options?: UseQueryOptions<GetAllPokemonNamesQuery, TError, TData>
+) =>
+  useQuery<GetAllPokemonNamesQuery, TError, TData>(
+    variables === undefined
+      ? ['GetAllPokemonNames']
+      : ['GetAllPokemonNames', variables],
+    fetcher<GetAllPokemonNamesQuery, GetAllPokemonNamesQueryVariables>(
+      GetAllPokemonNamesDocument,
+      variables
+    ),
+    options
+  )
+export const GetPokemonByNameOrIdDocument = `
+    query GetPokemonByNameOrId($id: ID!) {
+  pokemonById(id: $id) {
+    id
+    name
+    sprites {
+      other {
+        home {
+          front_default
+          front_shiny
+        }
+      }
+    }
+    stats {
+      base_stat
+      stat {
+        name
+      }
+    }
+    types {
+      type {
+        name
+      }
+    }
+  }
+}
+    `
+export const useGetPokemonByNameOrIdQuery = <
+  TData = GetPokemonByNameOrIdQuery,
+  TError = unknown
+>(
+  variables: GetPokemonByNameOrIdQueryVariables,
+  options?: UseQueryOptions<GetPokemonByNameOrIdQuery, TError, TData>
+) =>
+  useQuery<GetPokemonByNameOrIdQuery, TError, TData>(
+    ['GetPokemonByNameOrId', variables],
+    fetcher<GetPokemonByNameOrIdQuery, GetPokemonByNameOrIdQueryVariables>(
+      GetPokemonByNameOrIdDocument,
       variables
     ),
     options
