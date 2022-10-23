@@ -1,5 +1,5 @@
 import { InputMaybe } from '../generated/graphql-types'
-import { IPokemon, IPokemonByTypeObject, IResult } from '../models'
+import { IPokemonByTypeObject, IResult } from '../models'
 
 export interface AllPokemonResponse {
   count: number
@@ -15,6 +15,7 @@ export interface AllPokemonByTypeResponse {
 export interface PaginationParams {
   offset: number
   limit?: InputMaybe<number> | undefined
+  resource?: string
 }
 
 export interface URLParams {

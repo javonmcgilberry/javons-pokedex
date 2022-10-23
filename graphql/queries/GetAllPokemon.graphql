@@ -1,0 +1,19 @@
+query GetAllPokemon($offset: Int!, $limit: Int) {
+  allPokemon(offset: $offset, limit: $limit) {
+    id
+    name
+    sprites {
+      other {
+        home {
+          front_default
+        }
+      }
+    }
+    stats {
+      base_stat
+      stat {
+        name
+      }
+    }
+  }
+}

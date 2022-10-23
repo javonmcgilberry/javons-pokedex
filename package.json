@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@envelop/response-cache": "^4.0.2",
+    "@graphql-tools/load": "^7.7.7",
     "@graphql-yoga/node": "^2.13.13",
-    "@graphql-yoga/plugin-response-cache": "^1.0.0-canary-86cfcf6.0",
+    "@tanstack/react-query": "^4.13.0",
     "dataloader": "^2.1.0",
     "graphql": "^16.6.0",
     "next": "12.3.1",
@@ -23,8 +24,11 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@envelop/core": "^3.0.2",
     "@graphql-codegen/cli": "^2.13.7",
     "@graphql-codegen/typescript": "^2.7.5",
+    "@graphql-codegen/typescript-operations": "^2.5.5",
+    "@graphql-codegen/typescript-react-query": "^4.0.3",
     "@graphql-codegen/typescript-resolvers": "^2.7.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

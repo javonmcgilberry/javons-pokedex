@@ -1,5 +1,5 @@
-import { Resolvers } from '../../generated/graphql-types'
-import { GraphQLContext } from '../../models'
+import { Resolvers } from '@pokedex/generated/graphql-types'
+import { GraphQLContext } from '@pokedex/models'
 import Pokemon from './pokemon'
 
 const resolvers: Resolvers = {
@@ -30,7 +30,7 @@ const resolvers: Resolvers = {
       return await PokemonApi.allPokemonSpecies({ offset, limit })
     },
   },
-  ...Pokemon,
+  Pokemon,
 }
 
 export default resolvers

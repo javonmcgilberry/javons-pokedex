@@ -5,7 +5,6 @@ import { GraphQLContext, IPokemon } from '../models'
 const getPokemonById = async (id: string): Promise<IPokemon> => {
   const responseBody = await fetch(`${BASE_URL}pokemon/${id}`)
   const data = await responseBody.json()
-  console.log('RESPONSE BODY', data)
   return data
 }
 

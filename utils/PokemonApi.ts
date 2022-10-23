@@ -6,11 +6,15 @@ import {
   PaginationParams,
   URLParams,
 } from '../types/types'
-import { fetchPokemonApi } from './fetchPokeApi'
+import { fetchPokemonApiData } from './fetchPokeApi'
 
 class PokemonApi {
-  private resources: Record<string, string>
   private baseUrl: string
+  private resources: {
+    Pokemon: 'pokemon'
+    Species: 'pokemon-species'
+    Type: 'type'
+  }
   constructor() {
     this.baseUrl = BASE_URL
     this.resources = {
@@ -20,20 +24,6 @@ class PokemonApi {
     }
   }
 
-  private getUrl({ resource, limit, id }: URLParams) {
-    return `${this.baseUrl}${resource}${
-      id ? `${id && `/${id}`}` : `${limit && `?limit=${limit}`}`
-    }`
-  }
-
-  private getFetchPaginationUrl({
-    resource,
-    offset,
-    limit = 20,
-  }: { resource: string } & PaginationParams) {
-    return `${this.baseUrl}${resource}?offset=${offset}&limit=${limit}`
-  }
-
   private getId(result: IResult) {
     if (result.url) {
       return result.url.split('/')[result.url.split('/').length - 2]
@@ -41,53 +31,56 @@ class PokemonApi {
     return null
   }
 
-  async allPokemon({ offset, limit }: PaginationParams) {
-    const { results } = await fetchPokemonApi<AllPokemonResponse>(
-      this.getFetchPaginationUrl({
-        resource: this.resources.Pokemon,
-        offset,
-        limit,
-      })
-    )
+  private async getPaginatedData<T>({
+    resource,
+    offset,
+    limit,
+  }: PaginationParams) {
+    const url = `${this.baseUrl}${resource}?offset=${offset}&limit=${limit}`
+    const data = await fetchPokemonApiData<T>(url)
+    return data
+  }
+
+  private setData(results: IResult[]) {
     return results.map((result: IResult) => {
       return { ...result, id: this.getId(result) }
     })
   }
 
+  async allPokemon({ offset, limit }: PaginationParams) {
+    const data = await this.getPaginatedData<AllPokemonResponse>({
+      resource: this.resources.Pokemon,
+      offset,
+      limit,
+    })
+    const { results } = await data
+    return this.setData(results)
+  }
+
   async allPokemonByType(type: string) {
-    const { pokemon } = await fetchPokemonApi<AllPokemonByTypeResponse>(
-      this.getUrl({
-        resource: this.resources.Type,
-        id: type,
-      })
-    )
+    const url = `${this.baseUrl}${this.resources.Type}/${type}`
+    const { pokemon } = await fetchPokemonApiData<AllPokemonByTypeResponse>(url)
     return pokemon
   }
 
   async allPokemonTypes({ offset, limit }: PaginationParams) {
-    const { results } = await fetchPokemonApi<{ results: IResult[] }>(
-      this.getFetchPaginationUrl({
-        resource: this.resources.Type,
-        offset,
-        limit,
-      })
-    )
-    return results.map((result) => {
-      return { ...result, id: this.getId(result) }
+    const data = await this.getPaginatedData<{ results: IResult[] }>({
+      resource: this.resources.Type,
+      offset,
+      limit,
     })
+    const { results } = await data
+    return this.setData(results)
   }
 
   async allPokemonSpecies({ offset, limit }: PaginationParams) {
-    const { results } = await fetchPokemonApi<{ results: IResult[] }>(
-      this.getFetchPaginationUrl({
-        resource: this.resources.Pokemon,
-        offset,
-        limit,
-      })
-    )
-    return results.map((result) => {
-      return { ...result, id: this.getId(result) }
+    const data = await this.getPaginatedData<{ results: IResult[] }>({
+      resource: this.resources.Species,
+      offset,
+      limit,
     })
+    const { results } = await data
+    return this.setData(results)
   }
 }
 

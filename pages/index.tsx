@@ -1,9 +1,19 @@
+import { useGetAllPokemonQuery } from '@pokedex/generated/graphql-hooks'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+  const [offset, setOffset] = useState(0)
+  const { data, refetch } = useGetAllPokemonQuery({ offset, limit: 20 })
+  console.log('DATA', data)
+
+  useEffect(() => {
+    console.log('DATA', data)
+  }, [data])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +23,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
+        <h1
+          className={styles.title}
+          onClick={() => setOffset((prev) => prev + 20)}
+        >
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 

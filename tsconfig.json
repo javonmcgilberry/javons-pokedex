@@ -16,10 +16,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"],
       "@pokedex/*": ["*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "cypress", "./generated/**/*.ts"]
+  "exclude": ["node_modules", "cypress"]
 }
