@@ -1,4 +1,4 @@
-import { IPokemon } from '@pokedex/models'
+import { IPokemon } from '@pokedex/types/IPokemon'
 
 export interface IEvolutionChain {
   chain: IChain

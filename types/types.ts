@@ -1,5 +1,5 @@
 import { InputMaybe } from '../generated/graphql-types'
-import { IPokemonByTypeObject, IResult } from '../models'
+import { IPokemonByTypeObject, IResult } from './IPokemon'
 
 export interface AllPokemonResponse {
   count: number

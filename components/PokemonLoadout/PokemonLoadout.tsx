@@ -17,6 +17,7 @@ interface IPokemonPanel {
 }
 
 const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
+  console.log('GIVE ME THE POKEMON', pokemon)
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
   return (

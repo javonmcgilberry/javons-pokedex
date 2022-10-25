@@ -1,23 +1,98 @@
 query GetPokemonByNameOrId($id: ID!) {
   pokemonById(id: $id) {
-    id
-    name
     sprites {
       other {
         home {
           front_default
-          front_shiny
+        }
+        official_artwork {
+          front_default
+        }
+      }
+    }
+    species {
+      base_happiness
+      capture_rate
+      genera {
+        genus
+        language {
+          name
+        }
+      }
+      evolution_chain {
+        is_baby
+        evolves_to {
+          species {
+            name
+            sprites {
+              other {
+                home {
+                  front_default
+                }
+                official_artwork {
+                  front_default
+                }
+              }
+            }
+          }
+          evolves_to {
+            species {
+              name
+              sprites {
+                other {
+                  home {
+                    front_default
+                  }
+                  official_artwork {
+                    front_default
+                  }
+                }
+              }
+            }
+            evolves_to {
+              species {
+                name
+                sprites {
+                  other {
+                    home {
+                      front_default
+                    }
+                    official_artwork {
+                      front_default
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    name
+    base_experience
+    height
+    weight
+    abilities {
+      is_hidden
+      slot
+      ability {
+        name
+      }
+    }
+    moves {
+      move {
+        name
+        power
+        pp
+        priority
+        type {
+          name
         }
       }
     }
     stats {
       base_stat
       stat {
-        name
-      }
-    }
-    types {
-      type {
         name
       }
     }

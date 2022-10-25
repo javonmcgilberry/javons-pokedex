@@ -1,6 +1,6 @@
 import { IEvolutionChain } from '@pokedex/types/EvolutionChain'
 import { BASE_URL } from '../consts/consts'
-import { IResult } from '../models'
+import { IResult, IMoveDetails } from '../types/IPokemon'
 import {
   AllPokemonByTypeResponse,
   AllPokemonResponse,
@@ -15,6 +15,7 @@ class PokemonApi {
     Species: 'pokemon-species',
     Type: 'type',
     Evolution: 'evolution-chain',
+    move: 'move',
   }
   private static baseUrl = BASE_URL
   static getId(result: IResult) {
@@ -69,6 +70,12 @@ class PokemonApi {
   static async getEvolutionChain({ id }: { id: string }) {
     const url = `${this.baseUrl}${this.resources.Evolution}/${id}`
     const data = await fetchPokemonApiData<IEvolutionChain>(url)
+    return data
+  }
+
+  static async getMove({ id }: { id: string }) {
+    const url = `${this.baseUrl}${this.resources.move}/${id}`
+    const data = await fetchPokemonApiData<IMoveDetails>(url)
     return data
   }
 

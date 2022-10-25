@@ -1,6 +1,7 @@
 import DataLoader from 'dataloader'
 import { BASE_URL } from '../consts/consts'
-import { GraphQLContext, IPokemon } from '../models'
+import { GraphQLContext } from '../types/IPokemon'
+import { IPokemon } from '../types/IPokemon'
 
 const getPokemonById = async (id: string): Promise<IPokemon> => {
   const responseBody = await fetch(`${BASE_URL}pokemon/${id}`)

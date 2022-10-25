@@ -11,8 +11,9 @@ import {
   IPokemonByTypeObject,
   IPokemonTypeDetails,
   IResult,
+  IMoveDetails,
   GraphQLContext,
-} from '../models'
+} from '../types/IPokemon'
 import { IPokemonSpecies, IGenera } from '../types/PokemonSpecies'
 import { IChain } from '../types/EvolutionChain'
 export type Maybe<T> = T | null
@@ -37,6 +38,19 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+}
+
+export type Abilities = {
+  __typename?: 'Abilities'
+  ability?: Maybe<Ability>
+  is_hidden?: Maybe<Scalars['Boolean']>
+  slot?: Maybe<Scalars['Int']>
+}
+
+export type Ability = {
+  __typename?: 'Ability'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
 }
 
 export type Chain = {
@@ -64,6 +78,13 @@ export type EvolvesToDetails = {
   species?: Maybe<Pokemon>
 }
 
+export type FlavorText = {
+  __typename?: 'FlavorText'
+  flavor_text?: Maybe<Scalars['String']>
+  language?: Maybe<LanguageDetails>
+  version_group?: Maybe<VersionGroup>
+}
+
 export type Genera = {
   __typename?: 'Genera'
   genus?: Maybe<Scalars['String']>
@@ -84,18 +105,52 @@ export type LanguageDetails = {
   url?: Maybe<Scalars['String']>
 }
 
+export type MoveDetails = {
+  __typename?: 'MoveDetails'
+  accuracy?: Maybe<Scalars['Int']>
+  flavor_text_entries?: Maybe<Array<Maybe<FlavorText>>>
+  name?: Maybe<Scalars['String']>
+  power?: Maybe<Scalars['Int']>
+  pp?: Maybe<Scalars['Int']>
+  priority?: Maybe<Scalars['Int']>
+  type?: Maybe<MoveType>
+  url?: Maybe<Scalars['String']>
+}
+
+export type MoveType = {
+  __typename?: 'MoveType'
+  name?: Maybe<Scalars['String']>
+}
+
+export type Moves = {
+  __typename?: 'Moves'
+  move?: Maybe<MoveDetails>
+}
+
+export type OfficialArtwork = {
+  __typename?: 'OfficialArtwork'
+  front_default?: Maybe<Scalars['String']>
+}
+
 export type OtherSprites = {
   __typename?: 'OtherSprites'
   home?: Maybe<Home>
+  official_artwork?: Maybe<OfficialArtwork>
 }
 
 export type Pokemon = {
   __typename?: 'Pokemon'
+  abilities?: Maybe<Array<Maybe<Abilities>>>
+  base_experience?: Maybe<Scalars['Int']>
+  height?: Maybe<Scalars['Int']>
   id?: Maybe<Scalars['ID']>
+  moves?: Maybe<Array<Maybe<Moves>>>
   name: Scalars['String']
+  species?: Maybe<PokemonSpecies>
   sprites: Sprites
   stats?: Maybe<Array<PokemonStats>>
   types?: Maybe<Array<PokemonTypes>>
+  weight?: Maybe<Scalars['Int']>
 }
 
 export type PokemonByTypeObject = {
@@ -191,6 +246,12 @@ export type Sprites = {
   front_shiny?: Maybe<Scalars['String']>
   front_shiny_female?: Maybe<Scalars['String']>
   other?: Maybe<OtherSprites>
+}
+
+export type VersionGroup = {
+  __typename?: 'VersionGroup'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -300,6 +361,8 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Abilities: ResolverTypeWrapper<Abilities>
+  Ability: ResolverTypeWrapper<Ability>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Chain: ResolverTypeWrapper<IChain>
   EvolutionDetails: ResolverTypeWrapper<EvolutionDetails>
@@ -310,11 +373,18 @@ export type ResolversTypes = {
       species?: Maybe<ResolversTypes['Pokemon']>
     }
   >
+  FlavorText: ResolverTypeWrapper<FlavorText>
   Genera: ResolverTypeWrapper<IGenera>
   Home: ResolverTypeWrapper<IHome>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   LanguageDetails: ResolverTypeWrapper<LanguageDetails>
+  MoveDetails: ResolverTypeWrapper<IMoveDetails>
+  MoveType: ResolverTypeWrapper<MoveType>
+  Moves: ResolverTypeWrapper<
+    Omit<Moves, 'move'> & { move?: Maybe<ResolversTypes['MoveDetails']> }
+  >
+  OfficialArtwork: ResolverTypeWrapper<OfficialArtwork>
   OtherSprites: ResolverTypeWrapper<IOtherSprites>
   Pokemon: ResolverTypeWrapper<IPokemon>
   PokemonByTypeObject: ResolverTypeWrapper<IPokemonByTypeObject>
@@ -327,10 +397,13 @@ export type ResolversTypes = {
   Result: ResolverTypeWrapper<IResult>
   Sprites: ResolverTypeWrapper<ISprites>
   String: ResolverTypeWrapper<Scalars['String']>
+  VersionGroup: ResolverTypeWrapper<VersionGroup>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Abilities: Abilities
+  Ability: Ability
   Boolean: Scalars['Boolean']
   Chain: IChain
   EvolutionDetails: EvolutionDetails
@@ -339,11 +412,18 @@ export type ResolversParentTypes = {
     evolves_to?: Maybe<Array<Maybe<ResolversParentTypes['EvolvesToDetails']>>>
     species?: Maybe<ResolversParentTypes['Pokemon']>
   }
+  FlavorText: FlavorText
   Genera: IGenera
   Home: IHome
   ID: Scalars['ID']
   Int: Scalars['Int']
   LanguageDetails: LanguageDetails
+  MoveDetails: IMoveDetails
+  MoveType: MoveType
+  Moves: Omit<Moves, 'move'> & {
+    move?: Maybe<ResolversParentTypes['MoveDetails']>
+  }
+  OfficialArtwork: OfficialArtwork
   OtherSprites: IOtherSprites
   Pokemon: IPokemon
   PokemonByTypeObject: IPokemonByTypeObject
@@ -356,6 +436,30 @@ export type ResolversParentTypes = {
   Result: IResult
   Sprites: ISprites
   String: Scalars['String']
+  VersionGroup: VersionGroup
+}
+
+export type AbilitiesResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['Abilities'] = ResolversParentTypes['Abilities']
+> = {
+  ability?: Resolver<Maybe<ResolversTypes['Ability']>, ParentType, ContextType>
+  is_hidden?: Resolver<
+    Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >
+  slot?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type AbilityResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['Ability'] = ResolversParentTypes['Ability']
+> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type ChainResolvers<
@@ -411,6 +515,28 @@ export type EvolvesToDetailsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type FlavorTextResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['FlavorText'] = ResolversParentTypes['FlavorText']
+> = {
+  flavor_text?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >
+  language?: Resolver<
+    Maybe<ResolversTypes['LanguageDetails']>,
+    ParentType,
+    ContextType
+  >
+  version_group?: Resolver<
+    Maybe<ResolversTypes['VersionGroup']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type GeneraResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['Genera'] = ResolversParentTypes['Genera']
@@ -460,11 +586,63 @@ export type LanguageDetailsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type MoveDetailsResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['MoveDetails'] = ResolversParentTypes['MoveDetails']
+> = {
+  accuracy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  flavor_text_entries?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['FlavorText']>>>,
+    ParentType,
+    ContextType
+  >
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  power?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  pp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  type?: Resolver<Maybe<ResolversTypes['MoveType']>, ParentType, ContextType>
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type MoveTypeResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['MoveType'] = ResolversParentTypes['MoveType']
+> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type MovesResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['Moves'] = ResolversParentTypes['Moves']
+> = {
+  move?: Resolver<Maybe<ResolversTypes['MoveDetails']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type OfficialArtworkResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['OfficialArtwork'] = ResolversParentTypes['OfficialArtwork']
+> = {
+  front_default?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type OtherSpritesResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['OtherSprites'] = ResolversParentTypes['OtherSprites']
 > = {
   home?: Resolver<Maybe<ResolversTypes['Home']>, ParentType, ContextType>
+  official_artwork?: Resolver<
+    Maybe<ResolversTypes['OfficialArtwork']>,
+    ParentType,
+    ContextType
+  >
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -472,8 +650,29 @@ export type PokemonResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['Pokemon'] = ResolversParentTypes['Pokemon']
 > = {
+  abilities?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Abilities']>>>,
+    ParentType,
+    ContextType
+  >
+  base_experience?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >
+  height?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>
+  moves?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Moves']>>>,
+    ParentType,
+    ContextType
+  >
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  species?: Resolver<
+    Maybe<ResolversTypes['PokemonSpecies']>,
+    ParentType,
+    ContextType
+  >
   sprites?: Resolver<ResolversTypes['Sprites'], ParentType, ContextType>
   stats?: Resolver<
     Maybe<Array<ResolversTypes['PokemonStats']>>,
@@ -485,6 +684,7 @@ export type PokemonResolvers<
     ParentType,
     ContextType
   >
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -664,14 +864,30 @@ export type SpritesResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type VersionGroupResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['VersionGroup'] = ResolversParentTypes['VersionGroup']
+> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type Resolvers<ContextType = GraphQLContext> = {
+  Abilities?: AbilitiesResolvers<ContextType>
+  Ability?: AbilityResolvers<ContextType>
   Chain?: ChainResolvers<ContextType>
   EvolutionDetails?: EvolutionDetailsResolvers<ContextType>
   EvolutionItem?: EvolutionItemResolvers<ContextType>
   EvolvesToDetails?: EvolvesToDetailsResolvers<ContextType>
+  FlavorText?: FlavorTextResolvers<ContextType>
   Genera?: GeneraResolvers<ContextType>
   Home?: HomeResolvers<ContextType>
   LanguageDetails?: LanguageDetailsResolvers<ContextType>
+  MoveDetails?: MoveDetailsResolvers<ContextType>
+  MoveType?: MoveTypeResolvers<ContextType>
+  Moves?: MovesResolvers<ContextType>
+  OfficialArtwork?: OfficialArtworkResolvers<ContextType>
   OtherSprites?: OtherSpritesResolvers<ContextType>
   Pokemon?: PokemonResolvers<ContextType>
   PokemonByTypeObject?: PokemonByTypeObjectResolvers<ContextType>
@@ -683,4 +899,5 @@ export type Resolvers<ContextType = GraphQLContext> = {
   Query?: QueryResolvers<ContextType>
   Result?: ResultResolvers<ContextType>
   Sprites?: SpritesResolvers<ContextType>
+  VersionGroup?: VersionGroupResolvers<ContextType>
 }

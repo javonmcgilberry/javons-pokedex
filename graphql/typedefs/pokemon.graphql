@@ -1,9 +1,15 @@
 type Pokemon {
   id: ID
   name: String!
+  height: Int
   types: [PokemonTypes!]
   stats: [PokemonStats!]
   sprites: Sprites!
+  species: PokemonSpecies
+  base_experience: Int
+  abilities: [Abilities]
+  moves: [Moves]
+  weight: Int
 }
 
 type PokemonTypes {
@@ -36,6 +42,111 @@ type Sprites {
 
 type OtherSprites {
   home: Home
+}
+
+type Home {
+  front_default: String
+  front_female: String
+  front_shiny: String
+  front_shiny_female: String
+}
+
+type PokemonTypeDetails {
+  name: String!
+  url: String!
+}
+
+type Result {
+  name: String!
+  url: String!
+  id: String
+}
+
+type PokemonByTypeObject {
+  pokemon: Result
+}
+
+type Moves {
+  move: MoveDetails
+}
+
+type MoveDetails {
+  name: String
+  url: String
+  accuracy: Int
+  power: Int
+  pp: Int
+  priority: Int
+  type: MoveType
+  flavor_text_entries: [FlavorText]
+}
+
+type FlavorText {
+  flavor_text: String
+  language: LanguageDetails
+  version_group: VersionGroup
+}
+
+type LanguageDetails {
+  name: String
+  url: String
+}
+
+type VersionGroup {
+  name: String
+  url: String
+}
+
+type MoveType {
+  name: String
+}
+
+type Abilities {
+  ability: Ability
+  is_hidden: Boolean
+  slot: Int
+}
+
+type Ability {
+  name: String
+  url: String
+}
+
+type PokemonTypes {
+  slot: Int!
+  type: PokemonTypeDetails
+}
+
+type PokemonStats {
+  base_stat: Int!
+  effort: Int!
+  stat: PokemonStat
+}
+
+type PokemonStat {
+  name: String!
+  url: String!
+}
+
+type Sprites {
+  back_default: String
+  back_female: String
+  back_shiny: String
+  back_shiny_female: String
+  front_default: String
+  front_female: String
+  front_shiny: String
+  front_shiny_female: String
+  other: OtherSprites
+}
+
+type OtherSprites {
+  home: Home
+  official_artwork: OfficialArtwork
+}
+
+type OfficialArtwork {
+  front_default: String
 }
 
 type Home {

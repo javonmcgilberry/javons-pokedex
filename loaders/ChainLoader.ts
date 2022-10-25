@@ -1,7 +1,7 @@
 import { IEvolutionChain } from '@pokedex/types/EvolutionChain'
 import PokemonApi from '@pokedex/utils/PokemonApi'
 import DataLoader from 'dataloader'
-import { GraphQLContext, IResult } from '../models'
+import { GraphQLContext, IResult } from '../types/IPokemon'
 
 const getChainById = async (url: string): Promise<IEvolutionChain> => {
   const id = PokemonApi.getId({ url } as IResult) as string

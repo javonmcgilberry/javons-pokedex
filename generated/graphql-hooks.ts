@@ -38,6 +38,19 @@ export type Scalars = {
   Float: number
 }
 
+export type Abilities = {
+  __typename?: 'Abilities'
+  ability?: Maybe<Ability>
+  is_hidden?: Maybe<Scalars['Boolean']>
+  slot?: Maybe<Scalars['Int']>
+}
+
+export type Ability = {
+  __typename?: 'Ability'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
+}
+
 export type Chain = {
   __typename?: 'Chain'
   evolves_to?: Maybe<Array<Maybe<EvolvesToDetails>>>
@@ -63,6 +76,13 @@ export type EvolvesToDetails = {
   species?: Maybe<Pokemon>
 }
 
+export type FlavorText = {
+  __typename?: 'FlavorText'
+  flavor_text?: Maybe<Scalars['String']>
+  language?: Maybe<LanguageDetails>
+  version_group?: Maybe<VersionGroup>
+}
+
 export type Genera = {
   __typename?: 'Genera'
   genus?: Maybe<Scalars['String']>
@@ -83,18 +103,52 @@ export type LanguageDetails = {
   url?: Maybe<Scalars['String']>
 }
 
+export type MoveDetails = {
+  __typename?: 'MoveDetails'
+  accuracy?: Maybe<Scalars['Int']>
+  flavor_text_entries?: Maybe<Array<Maybe<FlavorText>>>
+  name?: Maybe<Scalars['String']>
+  power?: Maybe<Scalars['Int']>
+  pp?: Maybe<Scalars['Int']>
+  priority?: Maybe<Scalars['Int']>
+  type?: Maybe<MoveType>
+  url?: Maybe<Scalars['String']>
+}
+
+export type MoveType = {
+  __typename?: 'MoveType'
+  name?: Maybe<Scalars['String']>
+}
+
+export type Moves = {
+  __typename?: 'Moves'
+  move?: Maybe<MoveDetails>
+}
+
+export type OfficialArtwork = {
+  __typename?: 'OfficialArtwork'
+  front_default?: Maybe<Scalars['String']>
+}
+
 export type OtherSprites = {
   __typename?: 'OtherSprites'
   home?: Maybe<Home>
+  official_artwork?: Maybe<OfficialArtwork>
 }
 
 export type Pokemon = {
   __typename?: 'Pokemon'
+  abilities?: Maybe<Array<Maybe<Abilities>>>
+  base_experience?: Maybe<Scalars['Int']>
+  height?: Maybe<Scalars['Int']>
   id?: Maybe<Scalars['ID']>
+  moves?: Maybe<Array<Maybe<Moves>>>
   name: Scalars['String']
+  species?: Maybe<PokemonSpecies>
   sprites: Sprites
   stats?: Maybe<Array<PokemonStats>>
   types?: Maybe<Array<PokemonTypes>>
+  weight?: Maybe<Scalars['Int']>
 }
 
 export type PokemonByTypeObject = {
@@ -192,6 +246,12 @@ export type Sprites = {
   other?: Maybe<OtherSprites>
 }
 
+export type VersionGroup = {
+  __typename?: 'VersionGroup'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
+}
+
 export type GetAllPokemonQueryVariables = Exact<{
   offset: Scalars['Int']
   limit?: InputMaybe<Scalars['Int']>
@@ -233,27 +293,122 @@ export type GetPokemonByNameOrIdQuery = {
   __typename?: 'Query'
   pokemonById?: {
     __typename?: 'Pokemon'
-    id?: string | null
     name: string
+    base_experience?: number | null
+    height?: number | null
+    weight?: number | null
     sprites: {
       __typename?: 'Sprites'
       other?: {
         __typename?: 'OtherSprites'
-        home?: {
-          __typename?: 'Home'
+        home?: { __typename?: 'Home'; front_default?: string | null } | null
+        official_artwork?: {
+          __typename?: 'OfficialArtwork'
           front_default?: string | null
-          front_shiny?: string | null
         } | null
       } | null
     }
+    species?: {
+      __typename?: 'PokemonSpecies'
+      base_happiness?: number | null
+      capture_rate?: number | null
+      genera?: Array<{
+        __typename?: 'Genera'
+        genus?: string | null
+        language?: {
+          __typename?: 'LanguageDetails'
+          name?: string | null
+        } | null
+      } | null> | null
+      evolution_chain?: {
+        __typename?: 'Chain'
+        is_baby?: boolean | null
+        evolves_to?: Array<{
+          __typename?: 'EvolvesToDetails'
+          species?: {
+            __typename?: 'Pokemon'
+            name: string
+            sprites: {
+              __typename?: 'Sprites'
+              other?: {
+                __typename?: 'OtherSprites'
+                home?: {
+                  __typename?: 'Home'
+                  front_default?: string | null
+                } | null
+                official_artwork?: {
+                  __typename?: 'OfficialArtwork'
+                  front_default?: string | null
+                } | null
+              } | null
+            }
+          } | null
+          evolves_to?: Array<{
+            __typename?: 'EvolvesToDetails'
+            species?: {
+              __typename?: 'Pokemon'
+              name: string
+              sprites: {
+                __typename?: 'Sprites'
+                other?: {
+                  __typename?: 'OtherSprites'
+                  home?: {
+                    __typename?: 'Home'
+                    front_default?: string | null
+                  } | null
+                  official_artwork?: {
+                    __typename?: 'OfficialArtwork'
+                    front_default?: string | null
+                  } | null
+                } | null
+              }
+            } | null
+            evolves_to?: Array<{
+              __typename?: 'EvolvesToDetails'
+              species?: {
+                __typename?: 'Pokemon'
+                name: string
+                sprites: {
+                  __typename?: 'Sprites'
+                  other?: {
+                    __typename?: 'OtherSprites'
+                    home?: {
+                      __typename?: 'Home'
+                      front_default?: string | null
+                    } | null
+                    official_artwork?: {
+                      __typename?: 'OfficialArtwork'
+                      front_default?: string | null
+                    } | null
+                  } | null
+                }
+              } | null
+            } | null> | null
+          } | null> | null
+        } | null> | null
+      } | null
+    } | null
+    abilities?: Array<{
+      __typename?: 'Abilities'
+      is_hidden?: boolean | null
+      slot?: number | null
+      ability?: { __typename?: 'Ability'; name?: string | null } | null
+    } | null> | null
+    moves?: Array<{
+      __typename?: 'Moves'
+      move?: {
+        __typename?: 'MoveDetails'
+        name?: string | null
+        power?: number | null
+        pp?: number | null
+        priority?: number | null
+        type?: { __typename?: 'MoveType'; name?: string | null } | null
+      } | null
+    } | null> | null
     stats?: Array<{
       __typename?: 'PokemonStats'
       base_stat: number
       stat?: { __typename?: 'PokemonStat'; name: string } | null
-    }> | null
-    types?: Array<{
-      __typename?: 'PokemonTypes'
-      type?: { __typename?: 'PokemonTypeDetails'; name: string } | null
     }> | null
   } | null
 }
@@ -321,24 +476,99 @@ export const useGetAllPokemonNamesQuery = <
 export const GetPokemonByNameOrIdDocument = `
     query GetPokemonByNameOrId($id: ID!) {
   pokemonById(id: $id) {
-    id
-    name
     sprites {
       other {
         home {
           front_default
-          front_shiny
+        }
+        official_artwork {
+          front_default
+        }
+      }
+    }
+    species {
+      base_happiness
+      capture_rate
+      genera {
+        genus
+        language {
+          name
+        }
+      }
+      evolution_chain {
+        is_baby
+        evolves_to {
+          species {
+            name
+            sprites {
+              other {
+                home {
+                  front_default
+                }
+                official_artwork {
+                  front_default
+                }
+              }
+            }
+          }
+          evolves_to {
+            species {
+              name
+              sprites {
+                other {
+                  home {
+                    front_default
+                  }
+                  official_artwork {
+                    front_default
+                  }
+                }
+              }
+            }
+            evolves_to {
+              species {
+                name
+                sprites {
+                  other {
+                    home {
+                      front_default
+                    }
+                    official_artwork {
+                      front_default
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    name
+    base_experience
+    height
+    weight
+    abilities {
+      is_hidden
+      slot
+      ability {
+        name
+      }
+    }
+    moves {
+      move {
+        name
+        power
+        pp
+        priority
+        type {
+          name
         }
       }
     }
     stats {
       base_stat
       stat {
-        name
-      }
-    }
-    types {
-      type {
         name
       }
     }
