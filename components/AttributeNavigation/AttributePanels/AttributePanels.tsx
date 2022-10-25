@@ -15,5 +15,5 @@ export const AttributePanels = ({ children }: IAttributeNavigationProps) => {
       id,
     })
   })
-  return <div>{panels}</div>
+  return <>{panels}</>
 }

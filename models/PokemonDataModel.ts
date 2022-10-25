@@ -112,12 +112,14 @@ class PokemonDataModel {
 
   get moves() {
     if (!this.pokemon?.moves) {
-      return ''
+      return [{ move: '', type: '', power: '', typeIcon: '' }]
     }
 
     return this.pokemon.moves.map((move) => ({
-      move: move?.move?.name,
-      description: move?.move?.power,
+      move: move?.move?.name as string,
+      power: move?.move?.power as number,
+      type: move?.move?.type?.name as string,
+      typeIcon: `/assets/icons/${move?.move?.type?.name}.svg` as string,
     }))
   }
 }

@@ -18,7 +18,7 @@ export const AttributeNavigation = ({
 
   return (
     <AttributeNavigationContext.Provider value={value}>
-      <div>{children}</div>
+      {children}
     </AttributeNavigationContext.Provider>
   )
 }

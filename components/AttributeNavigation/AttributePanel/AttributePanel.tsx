@@ -6,6 +6,11 @@ export const AttributePanel = ({
   id,
 }: IAttributeNavigationProps) => {
   return (
-    <div id={`secondary-navigation-tabpanel-${id}-${tabIndex}`}>{children}</div>
+    <div
+      id={`secondary-navigation-tabpanel-${id}-${tabIndex}`}
+      className="overflow-scroll"
+    >
+      {children}
+    </div>
   )
 }
