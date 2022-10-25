@@ -1,7 +1,7 @@
 import { Resolvers } from '@pokedex/generated/graphql-types'
 import { loadChainData } from '@pokedex/loaders/ChainLoader'
 
-const Chain: Resolvers['Chain'] = {
+const ChainResolver: Resolvers['Chain'] = {
   evolves_to: async (parent, args, { chainLoader }) => {
     const response = await loadChainData(parent, chainLoader)
     return await response.chain?.evolves_to
@@ -16,4 +16,4 @@ const Chain: Resolvers['Chain'] = {
   },
 }
 
-export default Chain
+export default ChainResolver

@@ -4,7 +4,7 @@ import { Resolvers } from '../../generated/graphql-types'
 import { loadData } from '../../loaders/PokemonLoader'
 import { loadSpeciesData } from '../../loaders/PokemonSpeciesLoader'
 
-const Pokemon: Resolvers['Pokemon'] = {
+const PokemonResolver: Resolvers['Pokemon'] = {
   base_experience: async (parent, _, { pokemonDataLoader }) => {
     const data = await loadData(parent, pokemonDataLoader)
     return data.base_experience
@@ -53,4 +53,4 @@ const Pokemon: Resolvers['Pokemon'] = {
   },
 }
 
-export default Pokemon
+export default PokemonResolver
