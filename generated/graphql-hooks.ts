@@ -410,6 +410,10 @@ export type GetPokemonByNameOrIdQuery = {
       base_stat: number
       stat?: { __typename?: 'PokemonStat'; name: string } | null
     }> | null
+    types?: Array<{
+      __typename?: 'PokemonTypes'
+      type?: { __typename?: 'PokemonTypeDetails'; name: string } | null
+    }> | null
   } | null
 }
 
@@ -569,6 +573,11 @@ export const GetPokemonByNameOrIdDocument = `
     stats {
       base_stat
       stat {
+        name
+      }
+    }
+    types {
+      type {
         name
       }
     }

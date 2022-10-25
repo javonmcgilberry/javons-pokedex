@@ -20,6 +20,7 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
   console.log('GIVE ME THE POKEMON', pokemon)
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
+  console.log('POKE DATA', pokemonData)
   return (
     <div className={`${currentColor}`}>
       <div className={`mx-auto max-w-7xl  px-4 pt-32 sm:px-6 lg:px-8`}>
@@ -55,31 +56,61 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                 </AttributeGroup>
                 <AttributePanels>
                   <AttributePanel>
-                    <p>Panel one content!</p>
+                    <div className="grid grid-cols-5 gap-4 py-4">
+                      <div className="uppercase text-white">Species</div>
+                      <div className="col-span-4 font-bold text-white">
+                        {pokemonData.species}
+                      </div>
+                      <div className="uppercase text-white">Height</div>
+                      <div className="col-span-4 font-bold text-white">
+                        {pokemonData.height}
+                      </div>
+                      <div className="uppercase text-white">Weight</div>
+                      <div className="col-span-4 font-bold text-white">
+                        {pokemonData.weight}
+                      </div>
+                      <div className="uppercase text-white">Abilities</div>
+                      <div className="col-span-4 font-bold text-white">
+                        {pokemonData.abilities}
+                      </div>
+                      <div className="uppercase text-white">Type</div>
+                      <div className="col-span-4 flex gap-2 font-bold text-white">
+                        {pokemonData.typeIcons?.map(({ icon, name }) => (
+                          <div key={icon} className="flex items-center gap-2">
+                            <Image
+                              className="m-8 p-8 drop-shadow-sm"
+                              src={icon}
+                              alt={icon}
+                              width={32}
+                              height={32}
+                            />
+                            <span>{name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </AttributePanel>
                   <AttributePanel>
-                    <p>Panel two content!</p>
+                    <div className="grid grid-cols-5 gap-4 py-4">
+                      {pokemonData.stats?.map((stat) => {
+                        return (
+                          <>
+                            <div className="col-span-2 uppercase text-white">
+                              {stat.stat?.name}
+                            </div>
+                            <div className="col-span-3 font-bold text-white">
+                              {stat.base_stat}
+                            </div>
+                          </>
+                        )
+                      })}
+                    </div>
                   </AttributePanel>
                   <AttributePanel>
                     <p>Panel three content!</p>
                   </AttributePanel>
                 </AttributePanels>
               </AttributeNavigation>
-              <div className="ml-2 flex items-center gap-4">
-                <span className="text-xl text-white">Type:</span>
-                <span className="flex gap-2">
-                  {pokemonData.typeIcons?.map((icon) => (
-                    <Image
-                      className="m-8 p-8 drop-shadow-sm"
-                      key={icon}
-                      src={icon}
-                      alt={icon}
-                      width={40}
-                      height={40}
-                    />
-                  ))}
-                </span>
-              </div>
             </div>
           </div>
           <div className="h-full w-1/2">

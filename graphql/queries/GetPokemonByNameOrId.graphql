@@ -96,5 +96,10 @@ query GetPokemonByNameOrId($id: ID!) {
         name
       }
     }
+    types {
+      type {
+        name
+      }
+    }
   }
 }
