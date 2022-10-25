@@ -293,6 +293,7 @@ export type GetPokemonByNameOrIdQuery = {
   __typename?: 'Query'
   pokemonById?: {
     __typename?: 'Pokemon'
+    id?: string | null
     name: string
     base_experience?: number | null
     height?: number | null
@@ -480,6 +481,7 @@ export const useGetAllPokemonNamesQuery = <
 export const GetPokemonByNameOrIdDocument = `
     query GetPokemonByNameOrId($id: ID!) {
   pokemonById(id: $id) {
+    id
     sprites {
       other {
         home {

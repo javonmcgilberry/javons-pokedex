@@ -1,5 +1,6 @@
 query GetPokemonByNameOrId($id: ID!) {
   pokemonById(id: $id) {
+    id
     sprites {
       other {
         home {

@@ -1,5 +1,5 @@
 import { useGetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 
 const useActivePokemon = () => {
   const [activePokemonData, setActivePokemonData] = useState<string | number>(
@@ -29,6 +29,28 @@ const useActivePokemon = () => {
     // POKEMON NAME MUST be lowercase.
     setActivePokemonData(id.toLowerCase())
   }, [])
+
+  const handleKeypress = useCallback(
+    (event: KeyboardEvent) => {
+      console.log(event.key)
+      if (event.key === 'ArrowLeft') {
+        handlePagination.prev()
+        return
+      }
+      if (event.key === 'ArrowRight') {
+        handlePagination.next()
+        return
+      }
+    },
+    [handlePagination]
+  )
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeypress)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeypress)
+    }
+  }, [handleKeypress])
 
   return { handleSetActivePokemon, activePokemon, isLoading, handlePagination }
 }

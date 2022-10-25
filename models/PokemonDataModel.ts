@@ -3,7 +3,6 @@ import { stat } from 'fs'
 
 class PokemonDataModel {
   private metersToFeet = 3.281
-  private kilosToPounds = 3.281
 
   constructor(
     private pokemon: GetPokemonByNameOrIdQuery['pokemonById'],
@@ -21,6 +20,10 @@ class PokemonDataModel {
       pounds: lbs,
       ounces: oz,
     }
+  }
+
+  get pokedexNumber() {
+    return this.pokemon?.id
   }
 
   private getTypeColor(type: string | undefined) {
@@ -43,7 +46,8 @@ class PokemonDataModel {
   }
 
   get image() {
-    return this.pokemon?.sprites.other?.home?.front_default as string
+    return this.pokemon?.sprites.other?.official_artwork
+      ?.front_default as string
   }
 
   get types() {
