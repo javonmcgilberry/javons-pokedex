@@ -27,5 +27,6 @@ module.exports = {
     'generated/**/*.ts',
     'lint-staged.config.js',
     'next.config.js',
+    './cypress.config.ts',
   ],
 }

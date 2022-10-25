@@ -1,0 +1,18 @@
+.toggle_switch {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.toggle_switch:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.button_alternate {
+  border-radius: 0.2rem;
+  padding: 0.8rem;
+  background: blue;
+}
+
+.button_selected_alternate {
+  background: red;
+}

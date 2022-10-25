@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Questrial&family=Roboto:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,9 +7,10 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Questrial', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: white;
+  font-weight: 400;
 }
 
 a {

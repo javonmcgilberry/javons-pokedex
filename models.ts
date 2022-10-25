@@ -1,10 +1,10 @@
-import { Maybe } from '@envelop/types'
 import DataLoader from 'dataloader'
 import PokemonApi from './utils/PokemonApi'
 
 export interface GraphQLContext {
   PokemonApi: PokemonApi
   pokemonDataLoader: DataLoader<string, Promise<IPokemon>, string>
+  // pokemonSpeciesDataLoader: DataLoader<string, Promise<IPokemon>, string>
 }
 
 export interface IPokemon {
