@@ -109,5 +109,16 @@ class PokemonDataModel {
       })
       .join(', ')
   }
+
+  get moves() {
+    if (!this.pokemon?.moves) {
+      return ''
+    }
+
+    return this.pokemon.moves.map((move) => ({
+      move: move?.move?.name,
+      description: move?.move?.power,
+    }))
+  }
 }
 export default PokemonDataModel

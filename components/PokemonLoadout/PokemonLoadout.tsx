@@ -9,6 +9,7 @@ import {
   AttributePanels,
   AttributeNavigation,
 } from '../AttributeNavigation'
+import ProgressBar from '../ProgressBar/ProgressBar'
 
 interface IPokemonPanel {
   pokemon: GetPokemonByNameOrIdQuery['pokemonById']
@@ -97,8 +98,15 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                             <div className="col-span-2 uppercase text-white">
                               {stat.stat?.name}
                             </div>
-                            <div className="col-span-3 font-bold text-white">
+                            <div className="col-span-1 font-bold text-white">
                               {stat.base_stat}
+                            </div>
+                            <div className="col-span-2 font-bold text-white">
+                              <ProgressBar
+                                color={pokemonData?.typeColor}
+                                statValue={stat.base_stat}
+                                maxValue={stat.max}
+                              />
                             </div>
                           </>
                         )
@@ -106,7 +114,27 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                     </div>
                   </AttributePanel>
                   <AttributePanel>
-                    <p>Panel three content!</p>
+                    <div className="grid grid-cols-5 gap-4 py-4">
+                      {pokemonData.stats?.map((stat) => {
+                        return (
+                          <>
+                            <div className="col-span-2 uppercase text-white">
+                              {stat.stat?.name}
+                            </div>
+                            <div className="col-span-1 font-bold text-white">
+                              {stat.base_stat}
+                            </div>
+                            <div className="col-span-2 font-bold text-white">
+                              <ProgressBar
+                                color={pokemonData?.typeColor}
+                                statValue={stat.base_stat}
+                                maxValue={stat.max}
+                              />
+                            </div>
+                          </>
+                        )
+                      })}
+                    </div>
                   </AttributePanel>
                 </AttributePanels>
               </AttributeNavigation>
