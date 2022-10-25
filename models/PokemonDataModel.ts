@@ -60,7 +60,7 @@ class PokemonDataModel {
     if (this.pokemon?.types) {
       return this.pokemon?.types.map((typeObj) => ({
         icon: `/assets/icons/${typeObj.type?.name}.svg`,
-        name: typeObj.type?.name,
+        name: `${typeObj.type?.name}`,
       }))
     }
   }

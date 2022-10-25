@@ -17,7 +17,6 @@ interface IPokemonPanel {
 }
 
 const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
-  console.log('GIVE ME THE POKEMON', pokemon)
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
   console.log('POKE DATA', pokemonData)
@@ -75,7 +74,7 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                       </div>
                       <div className="uppercase text-white">Type</div>
                       <div className="col-span-4 flex gap-2 font-bold text-white">
-                        {pokemonData.typeIcons?.map(({ icon, name }) => (
+                        {pokemonData?.typeIcons?.map(({ icon, name }) => (
                           <div key={icon} className="flex items-center gap-2">
                             <Image
                               className="m-8 p-8 drop-shadow-sm"
@@ -84,7 +83,7 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                               width={32}
                               height={32}
                             />
-                            <span>{name}</span>
+                            <span>{name && name}</span>
                           </div>
                         ))}
                       </div>
