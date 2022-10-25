@@ -25,7 +25,7 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
     <div className={`${currentColor}`}>
       <div className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}>
         <div className="flex h-full w-full justify-between">
-          <div className="flex h-full w-1/2 flex-col">
+          <div className="flex h-full w-1/2 flex-col justify-center">
             <div className="flex justify-between gap-2">
               <Image
                 alt="left-arrow"
@@ -77,13 +77,15 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                       <div className="col-span-4 flex gap-2 font-bold text-white">
                         {pokemonData?.typeIcons?.map(({ icon, name }) => (
                           <div key={icon} className="flex items-center gap-2">
-                            <Image
-                              className="m-8 p-8 drop-shadow-sm"
-                              src={icon}
-                              alt={icon}
-                              width={32}
-                              height={32}
-                            />
+                            {icon && (
+                              <Image
+                                className="m-8 p-8 drop-shadow-sm"
+                                src={icon}
+                                alt={icon}
+                                width={32}
+                                height={32}
+                              />
+                            )}
                             <span>{name && name}</span>
                           </div>
                         ))}
@@ -134,13 +136,15 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
                               {move.power}
                             </div>
                             <div className="col-span-1 flex items-center gap-2 text-white">
-                              <Image
-                                className="m-8 p-8 drop-shadow-sm"
-                                src={move.typeIcon}
-                                alt={move.typeIcon}
-                                width={32}
-                                height={32}
-                              />
+                              {move.typeIcon && (
+                                <Image
+                                  className="m-8 p-8 drop-shadow-sm"
+                                  src={move.typeIcon}
+                                  alt={move.typeIcon}
+                                  width={32}
+                                  height={32}
+                                />
+                              )}
                               <span>{move.type && move.type}</span>
                             </div>
                           </>
@@ -154,14 +158,16 @@ const PokemonPanel = ({ pokemon, handlePagination }: IPokemonPanel) => {
           </div>
           <div className="flex h-full w-1/2 flex-col justify-center">
             <div>
-              <Image
-                src={pokemonData?.image}
-                className="h-full w-auto max-w-none object-contain"
-                alt={pokemonData.name}
-                width={1000}
-                height={1000}
-                quality={100}
-              />
+              {pokemonData?.image && (
+                <Image
+                  src={pokemonData?.image}
+                  className="h-full w-auto max-w-none object-contain"
+                  alt={pokemonData.name}
+                  width={1000}
+                  height={1000}
+                  quality={100}
+                />
+              )}
             </div>
           </div>
         </div>
