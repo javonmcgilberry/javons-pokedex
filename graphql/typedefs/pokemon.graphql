@@ -1,5 +1,5 @@
 type Pokemon {
-  id: ID!
+  id: ID
   name: String!
   types: [PokemonTypes!]
   stats: [PokemonStats!]

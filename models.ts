@@ -1,10 +1,13 @@
 import DataLoader from 'dataloader'
 import PokemonApi from './utils/PokemonApi'
+import { IPokemonSpecies } from './types/PokemonSpecies'
+import { IEvolutionChain } from './types/EvolutionChain'
 
 export interface GraphQLContext {
-  PokemonApi: PokemonApi
+  PokemonApi: typeof PokemonApi
   pokemonDataLoader: DataLoader<string, Promise<IPokemon>, string>
-  // pokemonSpeciesDataLoader: DataLoader<string, Promise<IPokemon>, string>
+  pokemonSpeciesDataLoader: DataLoader<string, Promise<IPokemonSpecies>, string>
+  chainLoader: DataLoader<string, Promise<IEvolutionChain>, string>
 }
 
 export interface IPokemon {
@@ -51,6 +54,11 @@ export interface ISprites {
 export interface IOtherSprites {
   dream_world: DreamWorld
   home: IHome
+  ['official-artwork']: Front_Default
+}
+
+export interface Front_Default {
+  front_default: string
 }
 
 export interface DreamWorld {

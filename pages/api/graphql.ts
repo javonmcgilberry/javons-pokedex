@@ -10,6 +10,8 @@ import resolvers from '../../graphql/resolvers'
 import { PokemonLoader } from '../../loaders/PokemonLoader'
 import { GraphQLContext } from '../../models'
 import { loadSchema } from '@graphql-tools/load'
+import { PokemonSpeciesLoader } from '@pokedex/loaders/PokemonSpeciesLoader'
+import { ChainLoader } from '@pokedex/loaders/ChainLoader'
 
 const schema = await loadSchema('./graphql/typedefs/*.graphql', {
   loaders: [new GraphQLFileLoader()],
@@ -26,8 +28,10 @@ const server = createServer<GraphQLContext>({
     }),
   ],
   context: () => ({
-    PokemonApi: new PokemonApi(),
+    PokemonApi: PokemonApi,
     pokemonDataLoader: PokemonLoader,
+    pokemonSpeciesDataLoader: PokemonSpeciesLoader,
+    chainLoader: ChainLoader,
   }),
 })
 

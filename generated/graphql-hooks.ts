@@ -38,12 +38,49 @@ export type Scalars = {
   Float: number
 }
 
+export type Chain = {
+  __typename?: 'Chain'
+  evolves_to?: Maybe<Array<Maybe<EvolvesToDetails>>>
+  is_baby?: Maybe<Scalars['Boolean']>
+  species?: Maybe<Pokemon>
+}
+
+export type EvolutionDetails = {
+  __typename?: 'EvolutionDetails'
+  item?: Maybe<EvolutionItem>
+}
+
+export type EvolutionItem = {
+  __typename?: 'EvolutionItem'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
+}
+
+export type EvolvesToDetails = {
+  __typename?: 'EvolvesToDetails'
+  evolution_details?: Maybe<EvolutionDetails>
+  evolves_to?: Maybe<Array<Maybe<EvolvesToDetails>>>
+  species?: Maybe<Pokemon>
+}
+
+export type Genera = {
+  __typename?: 'Genera'
+  genus?: Maybe<Scalars['String']>
+  language?: Maybe<LanguageDetails>
+}
+
 export type Home = {
   __typename?: 'Home'
   front_default?: Maybe<Scalars['String']>
   front_female?: Maybe<Scalars['String']>
   front_shiny?: Maybe<Scalars['String']>
   front_shiny_female?: Maybe<Scalars['String']>
+}
+
+export type LanguageDetails = {
+  __typename?: 'LanguageDetails'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
 }
 
 export type OtherSprites = {
@@ -53,7 +90,7 @@ export type OtherSprites = {
 
 export type Pokemon = {
   __typename?: 'Pokemon'
-  id: Scalars['ID']
+  id?: Maybe<Scalars['ID']>
   name: Scalars['String']
   sprites: Sprites
   stats?: Maybe<Array<PokemonStats>>
@@ -63,6 +100,14 @@ export type Pokemon = {
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
   pokemon?: Maybe<Result>
+}
+
+export type PokemonSpecies = {
+  __typename?: 'PokemonSpecies'
+  base_happiness?: Maybe<Scalars['Int']>
+  capture_rate?: Maybe<Scalars['Int']>
+  evolution_chain?: Maybe<Chain>
+  genera?: Maybe<Array<Maybe<Genera>>>
 }
 
 export type PokemonStat = {
@@ -97,6 +142,7 @@ export type Query = {
   allPokemonSpecies: Array<Result>
   allPokemonTypes: Array<Result>
   pokemonById?: Maybe<Pokemon>
+  pokemonSpeciesById?: Maybe<PokemonSpecies>
 }
 
 export type QueryAllPokemonArgs = {
@@ -119,6 +165,10 @@ export type QueryAllPokemonTypesArgs = {
 }
 
 export type QueryPokemonByIdArgs = {
+  id: Scalars['ID']
+}
+
+export type QueryPokemonSpeciesByIdArgs = {
   id: Scalars['ID']
 }
 
@@ -151,7 +201,7 @@ export type GetAllPokemonQuery = {
   __typename?: 'Query'
   allPokemon: Array<{
     __typename?: 'Pokemon'
-    id: string
+    id?: string | null
     name: string
     sprites: {
       __typename?: 'Sprites'
@@ -183,7 +233,7 @@ export type GetPokemonByNameOrIdQuery = {
   __typename?: 'Query'
   pokemonById?: {
     __typename?: 'Pokemon'
-    id: string
+    id?: string | null
     name: string
     sprites: {
       __typename?: 'Sprites'

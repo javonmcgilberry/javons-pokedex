@@ -1,5 +1,6 @@
 import { Resolvers } from '@pokedex/generated/graphql-types'
 import { GraphQLContext } from '@pokedex/models'
+import Chain from './chain'
 import Pokemon from './pokemon'
 
 const resolvers: Resolvers = {
@@ -14,6 +15,15 @@ const resolvers: Resolvers = {
     },
     allPokemonByType: async (_, { type }, { PokemonApi }) => {
       return await PokemonApi.allPokemonByType(type)
+    },
+    pokemonSpeciesById: async (
+      parent,
+      args: { id: string },
+      { pokemonSpeciesDataLoader }: GraphQLContext
+    ) => {
+      const { id } = args
+      const response = await pokemonSpeciesDataLoader.load(String(id))
+      return response
     },
     pokemonById: async (
       parent,
@@ -31,6 +41,7 @@ const resolvers: Resolvers = {
     },
   },
   Pokemon,
+  Chain,
 }
 
 export default resolvers

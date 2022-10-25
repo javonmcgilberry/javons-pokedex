@@ -1,8 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import {
-  AttributeNavigationPropType,
-  NavColors,
-} from './AttributeNavigation.types'
+import { AttributeNavigationPropType } from './AttributeNavigation.types'
 import { AttributeNavigationContext } from './AttributeNavigationContext'
 
 export const AttributeNavigation = ({

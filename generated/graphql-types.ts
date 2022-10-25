@@ -6,12 +6,15 @@ import {
   IPokemonStat,
   ISprites,
   IOtherSprites,
+  Front_Default,
   IHome,
   IPokemonByTypeObject,
   IPokemonTypeDetails,
   IResult,
   GraphQLContext,
 } from '../models'
+import { IPokemonSpecies, IGenera } from '../types/PokemonSpecies'
+import { IChain } from '../types/EvolutionChain'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -23,6 +26,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>
 }
@@ -35,12 +39,49 @@ export type Scalars = {
   Float: number
 }
 
+export type Chain = {
+  __typename?: 'Chain'
+  evolves_to?: Maybe<Array<Maybe<EvolvesToDetails>>>
+  is_baby?: Maybe<Scalars['Boolean']>
+  species?: Maybe<Pokemon>
+}
+
+export type EvolutionDetails = {
+  __typename?: 'EvolutionDetails'
+  item?: Maybe<EvolutionItem>
+}
+
+export type EvolutionItem = {
+  __typename?: 'EvolutionItem'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
+}
+
+export type EvolvesToDetails = {
+  __typename?: 'EvolvesToDetails'
+  evolution_details?: Maybe<EvolutionDetails>
+  evolves_to?: Maybe<Array<Maybe<EvolvesToDetails>>>
+  species?: Maybe<Pokemon>
+}
+
+export type Genera = {
+  __typename?: 'Genera'
+  genus?: Maybe<Scalars['String']>
+  language?: Maybe<LanguageDetails>
+}
+
 export type Home = {
   __typename?: 'Home'
   front_default?: Maybe<Scalars['String']>
   front_female?: Maybe<Scalars['String']>
   front_shiny?: Maybe<Scalars['String']>
   front_shiny_female?: Maybe<Scalars['String']>
+}
+
+export type LanguageDetails = {
+  __typename?: 'LanguageDetails'
+  name?: Maybe<Scalars['String']>
+  url?: Maybe<Scalars['String']>
 }
 
 export type OtherSprites = {
@@ -50,7 +91,7 @@ export type OtherSprites = {
 
 export type Pokemon = {
   __typename?: 'Pokemon'
-  id: Scalars['ID']
+  id?: Maybe<Scalars['ID']>
   name: Scalars['String']
   sprites: Sprites
   stats?: Maybe<Array<PokemonStats>>
@@ -60,6 +101,14 @@ export type Pokemon = {
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
   pokemon?: Maybe<Result>
+}
+
+export type PokemonSpecies = {
+  __typename?: 'PokemonSpecies'
+  base_happiness?: Maybe<Scalars['Int']>
+  capture_rate?: Maybe<Scalars['Int']>
+  evolution_chain?: Maybe<Chain>
+  genera?: Maybe<Array<Maybe<Genera>>>
 }
 
 export type PokemonStat = {
@@ -94,6 +143,7 @@ export type Query = {
   allPokemonSpecies: Array<Result>
   allPokemonTypes: Array<Result>
   pokemonById?: Maybe<Pokemon>
+  pokemonSpeciesById?: Maybe<PokemonSpecies>
 }
 
 export type QueryAllPokemonArgs = {
@@ -116,6 +166,10 @@ export type QueryAllPokemonTypesArgs = {
 }
 
 export type QueryPokemonByIdArgs = {
+  id: Scalars['ID']
+}
+
+export type QueryPokemonSpeciesByIdArgs = {
   id: Scalars['ID']
 }
 
@@ -247,12 +301,24 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  Chain: ResolverTypeWrapper<IChain>
+  EvolutionDetails: ResolverTypeWrapper<EvolutionDetails>
+  EvolutionItem: ResolverTypeWrapper<EvolutionItem>
+  EvolvesToDetails: ResolverTypeWrapper<
+    Omit<EvolvesToDetails, 'evolves_to' | 'species'> & {
+      evolves_to?: Maybe<Array<Maybe<ResolversTypes['EvolvesToDetails']>>>
+      species?: Maybe<ResolversTypes['Pokemon']>
+    }
+  >
+  Genera: ResolverTypeWrapper<IGenera>
   Home: ResolverTypeWrapper<IHome>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
+  LanguageDetails: ResolverTypeWrapper<LanguageDetails>
   OtherSprites: ResolverTypeWrapper<IOtherSprites>
   Pokemon: ResolverTypeWrapper<IPokemon>
   PokemonByTypeObject: ResolverTypeWrapper<IPokemonByTypeObject>
+  PokemonSpecies: ResolverTypeWrapper<IPokemonSpecies>
   PokemonStat: ResolverTypeWrapper<IPokemonStat>
   PokemonStats: ResolverTypeWrapper<IPokemonStats>
   PokemonTypeDetails: ResolverTypeWrapper<IPokemonTypeDetails>
@@ -266,12 +332,22 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
+  Chain: IChain
+  EvolutionDetails: EvolutionDetails
+  EvolutionItem: EvolutionItem
+  EvolvesToDetails: Omit<EvolvesToDetails, 'evolves_to' | 'species'> & {
+    evolves_to?: Maybe<Array<Maybe<ResolversParentTypes['EvolvesToDetails']>>>
+    species?: Maybe<ResolversParentTypes['Pokemon']>
+  }
+  Genera: IGenera
   Home: IHome
   ID: Scalars['ID']
   Int: Scalars['Int']
+  LanguageDetails: LanguageDetails
   OtherSprites: IOtherSprites
   Pokemon: IPokemon
   PokemonByTypeObject: IPokemonByTypeObject
+  PokemonSpecies: IPokemonSpecies
   PokemonStat: IPokemonStat
   PokemonStats: IPokemonStats
   PokemonTypeDetails: IPokemonTypeDetails
@@ -280,6 +356,72 @@ export type ResolversParentTypes = {
   Result: IResult
   Sprites: ISprites
   String: Scalars['String']
+}
+
+export type ChainResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['Chain'] = ResolversParentTypes['Chain']
+> = {
+  evolves_to?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['EvolvesToDetails']>>>,
+    ParentType,
+    ContextType
+  >
+  is_baby?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
+  species?: Resolver<Maybe<ResolversTypes['Pokemon']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type EvolutionDetailsResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['EvolutionDetails'] = ResolversParentTypes['EvolutionDetails']
+> = {
+  item?: Resolver<
+    Maybe<ResolversTypes['EvolutionItem']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type EvolutionItemResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['EvolutionItem'] = ResolversParentTypes['EvolutionItem']
+> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type EvolvesToDetailsResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['EvolvesToDetails'] = ResolversParentTypes['EvolvesToDetails']
+> = {
+  evolution_details?: Resolver<
+    Maybe<ResolversTypes['EvolutionDetails']>,
+    ParentType,
+    ContextType
+  >
+  evolves_to?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['EvolvesToDetails']>>>,
+    ParentType,
+    ContextType
+  >
+  species?: Resolver<Maybe<ResolversTypes['Pokemon']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type GeneraResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['Genera'] = ResolversParentTypes['Genera']
+> = {
+  genus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  language?: Resolver<
+    Maybe<ResolversTypes['LanguageDetails']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type HomeResolvers<
@@ -309,6 +451,15 @@ export type HomeResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type LanguageDetailsResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['LanguageDetails'] = ResolversParentTypes['LanguageDetails']
+> = {
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type OtherSpritesResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['OtherSprites'] = ResolversParentTypes['OtherSprites']
@@ -321,7 +472,7 @@ export type PokemonResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['Pokemon'] = ResolversParentTypes['Pokemon']
 > = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   sprites?: Resolver<ResolversTypes['Sprites'], ParentType, ContextType>
   stats?: Resolver<
@@ -342,6 +493,29 @@ export type PokemonByTypeObjectResolvers<
   ParentType extends ResolversParentTypes['PokemonByTypeObject'] = ResolversParentTypes['PokemonByTypeObject']
 > = {
   pokemon?: Resolver<Maybe<ResolversTypes['Result']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type PokemonSpeciesResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['PokemonSpecies'] = ResolversParentTypes['PokemonSpecies']
+> = {
+  base_happiness?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >
+  capture_rate?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  evolution_chain?: Resolver<
+    Maybe<ResolversTypes['Chain']>,
+    ParentType,
+    ContextType
+  >
+  genera?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Genera']>>>,
+    ParentType,
+    ContextType
+  >
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -420,6 +594,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryPokemonByIdArgs, 'id'>
   >
+  pokemonSpeciesById?: Resolver<
+    Maybe<ResolversTypes['PokemonSpecies']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPokemonSpeciesByIdArgs, 'id'>
+  >
 }
 
 export type ResultResolvers<
@@ -485,10 +665,17 @@ export type SpritesResolvers<
 }
 
 export type Resolvers<ContextType = GraphQLContext> = {
+  Chain?: ChainResolvers<ContextType>
+  EvolutionDetails?: EvolutionDetailsResolvers<ContextType>
+  EvolutionItem?: EvolutionItemResolvers<ContextType>
+  EvolvesToDetails?: EvolvesToDetailsResolvers<ContextType>
+  Genera?: GeneraResolvers<ContextType>
   Home?: HomeResolvers<ContextType>
+  LanguageDetails?: LanguageDetailsResolvers<ContextType>
   OtherSprites?: OtherSpritesResolvers<ContextType>
   Pokemon?: PokemonResolvers<ContextType>
   PokemonByTypeObject?: PokemonByTypeObjectResolvers<ContextType>
+  PokemonSpecies?: PokemonSpeciesResolvers<ContextType>
   PokemonStat?: PokemonStatResolvers<ContextType>
   PokemonStats?: PokemonStatsResolvers<ContextType>
   PokemonTypeDetails?: PokemonTypeDetailsResolvers<ContextType>
