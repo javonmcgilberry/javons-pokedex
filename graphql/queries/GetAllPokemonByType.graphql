@@ -1,0 +1,21 @@
+query GetAllPokemonByType($type: String!) {
+  allPokemonByType(type: $type) {
+    pokemon {
+      id
+      name
+      types {
+        type {
+          name
+          url
+        }
+      }
+      sprites {
+        other {
+          official_artwork {
+            front_default
+          }
+        }
+      }
+    }
+  }
+}

@@ -153,7 +153,7 @@ export type Pokemon = {
 
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
-  pokemon?: Maybe<Result>
+  pokemon?: Maybe<Pokemon>
 }
 
 export type PokemonSpecies = {
@@ -275,6 +275,40 @@ export type GetAllPokemonQuery = {
       base_stat: number
       stat?: { __typename?: 'PokemonStat'; name: string } | null
     }> | null
+  }>
+}
+
+export type GetAllPokemonByTypeQueryVariables = Exact<{
+  type: Scalars['String']
+}>
+
+export type GetAllPokemonByTypeQuery = {
+  __typename?: 'Query'
+  allPokemonByType: Array<{
+    __typename?: 'PokemonByTypeObject'
+    pokemon?: {
+      __typename?: 'Pokemon'
+      id?: string | null
+      name: string
+      types?: Array<{
+        __typename?: 'PokemonTypes'
+        type?: {
+          __typename?: 'PokemonTypeDetails'
+          name: string
+          url: string
+        } | null
+      }> | null
+      sprites: {
+        __typename?: 'Sprites'
+        other?: {
+          __typename?: 'OtherSprites'
+          official_artwork?: {
+            __typename?: 'OfficialArtwork'
+            front_default?: string | null
+          } | null
+        } | null
+      }
+    } | null
   }>
 }
 
@@ -450,6 +484,44 @@ export const useGetAllPokemonQuery = <
     ['GetAllPokemon', variables],
     fetcher<GetAllPokemonQuery, GetAllPokemonQueryVariables>(
       GetAllPokemonDocument,
+      variables
+    ),
+    options
+  )
+export const GetAllPokemonByTypeDocument = `
+    query GetAllPokemonByType($type: String!) {
+  allPokemonByType(type: $type) {
+    pokemon {
+      id
+      name
+      types {
+        type {
+          name
+          url
+        }
+      }
+      sprites {
+        other {
+          official_artwork {
+            front_default
+          }
+        }
+      }
+    }
+  }
+}
+    `
+export const useGetAllPokemonByTypeQuery = <
+  TData = GetAllPokemonByTypeQuery,
+  TError = unknown
+>(
+  variables: GetAllPokemonByTypeQueryVariables,
+  options?: UseQueryOptions<GetAllPokemonByTypeQuery, TError, TData>
+) =>
+  useQuery<GetAllPokemonByTypeQuery, TError, TData>(
+    ['GetAllPokemonByType', variables],
+    fetcher<GetAllPokemonByTypeQuery, GetAllPokemonByTypeQueryVariables>(
+      GetAllPokemonByTypeDocument,
       variables
     ),
     options

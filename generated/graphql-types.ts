@@ -155,7 +155,7 @@ export type Pokemon = {
 
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
-  pokemon?: Maybe<Result>
+  pokemon?: Maybe<Pokemon>
 }
 
 export type PokemonSpecies = {
@@ -692,7 +692,7 @@ export type PokemonByTypeObjectResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['PokemonByTypeObject'] = ResolversParentTypes['PokemonByTypeObject']
 > = {
-  pokemon?: Resolver<Maybe<ResolversTypes['Result']>, ParentType, ContextType>
+  pokemon?: Resolver<Maybe<ResolversTypes['Pokemon']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

@@ -63,7 +63,7 @@ type Result {
 }
 
 type PokemonByTypeObject {
-  pokemon: Result
+  pokemon: Pokemon
 }
 
 type Moves {
@@ -165,8 +165,4 @@ type Result {
   name: String!
   url: String!
   id: String
-}
-
-type PokemonByTypeObject {
-  pokemon: Result
 }

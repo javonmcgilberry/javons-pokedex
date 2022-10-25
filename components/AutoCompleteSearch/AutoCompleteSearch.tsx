@@ -26,7 +26,7 @@ const AutoCompleteSearch = ({
           value={value}
           disabled={isLoading}
           onChange={handleChange}
-          className="h-10 w-full rounded-md bg-white px-5 pr-10 text-sm drop-shadow-md focus:outline-none"
+          className="z-10 h-10 w-full rounded-md bg-white px-5 pr-10 text-sm drop-shadow-md focus:outline-none"
         />
         <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
           <svg
@@ -45,7 +45,7 @@ const AutoCompleteSearch = ({
         </button>
       </div>
       {suggestionsActive && (
-        <ul className="absolute w-full">
+        <ul className="absolute z-10 w-full">
           {suggestions.map((suggestion, index) => {
             return (
               <li

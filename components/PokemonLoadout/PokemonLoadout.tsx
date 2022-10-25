@@ -25,24 +25,19 @@ const PokemonPanel = ({
 }: IPokemonPanel) => {
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
-  console.log('POKE DATA', pokemonData)
 
   return (
-    <div className={`${currentColor}`}>
+    <div className={`${currentColor} rounded-b-[12rem] `}>
       <div className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}>
         <div className="flex h-full w-full justify-between">
           <div className="flex h-full w-1/2 flex-col justify-center">
-            <div
-              className="flex justify-between gap-2"
-              // onKeyDown={(e) => handleKeyDown(e)}
-            >
+            <div className="flex justify-between gap-2">
               <Image
                 alt="left-arrow"
                 className="m-8 p-8 drop-shadow-sm"
                 width={40}
                 height={40}
                 src="/assets/icons/arrow-left.svg"
-                onKeyDown={(e) => console.log('EVENT', e)}
                 onClick={() => handlePagination.prev()}
               />
               <h1 className="text-center text-[5rem] capitalize text-white drop-shadow-md">
@@ -172,7 +167,7 @@ const PokemonPanel = ({
           </div>
           <div className="relative flex h-full w-1/2 flex-col justify-center">
             {pokemonData?.pokedexNumber && (
-              <h1 className="absolute top-0 right-0 z-20 text-center text-[8rem] capitalize text-white opacity-60 drop-shadow-md">
+              <h1 className="absolute top-0 right-0 z-10 text-center text-[8rem] capitalize text-white opacity-60 drop-shadow-md">
                 <span className="flex justify-end">
                   #{pokemonData?.pokedexNumber}
                 </span>

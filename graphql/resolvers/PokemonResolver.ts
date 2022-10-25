@@ -5,6 +5,10 @@ import { loadData } from '../../loaders/PokemonLoader'
 import { loadSpeciesData } from '../../loaders/PokemonSpeciesLoader'
 
 const PokemonResolver: Resolvers['Pokemon'] = {
+  id: async (parent, _, { pokemonDataLoader }) => {
+    const data = await loadData(parent, pokemonDataLoader)
+    return data.id
+  },
   base_experience: async (parent, _, { pokemonDataLoader }) => {
     const data = await loadData(parent, pokemonDataLoader)
     return data.base_experience
@@ -25,11 +29,7 @@ const PokemonResolver: Resolvers['Pokemon'] = {
     const data = await loadData(parent, pokemonDataLoader)
     return data.types
   },
-  species: async (
-    parent,
-    _,
-    { pokemonDataLoader, pokemonSpeciesDataLoader }
-  ) => {
+  species: async (parent, _, { pokemonSpeciesDataLoader }) => {
     const data = await loadSpeciesData(
       parent as IPokemonSpecies & IPokemon,
       pokemonSpeciesDataLoader
