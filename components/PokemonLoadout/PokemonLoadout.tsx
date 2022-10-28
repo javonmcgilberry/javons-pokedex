@@ -2,7 +2,6 @@ import { GetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
 import usePokemonBackgroundColor from '@pokedex/hooks/usePokemonBackgroundColor'
 import PokemonDataModel from '@pokedex/models/PokemonDataModel'
 import Image from 'next/image'
-import { useCallback, useEffect, useRef } from 'react'
 import {
   AttributeGroup,
   NavOption,

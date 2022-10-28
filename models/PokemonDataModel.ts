@@ -93,7 +93,7 @@ class PokemonDataModel {
       ((this.pokemon?.weight as number) * 0.1).toFixed(2)
     )
     const weight = this.kToLbs(this.pokemon?.weight as number)
-    return `${weight.pounds.toFixed(2)}lbs ${weight.ounces.toFixed(
+    return `${(0.1 * weight.pounds).toFixed(2)}lbs ${weight.ounces.toFixed(
       2
     )}oz (${kilos} kg)`
   }

@@ -5,7 +5,6 @@ import { useGetAllPokemonByTypeQuery } from '@pokedex/generated/graphql-hooks'
 import useActivePokemon from '@pokedex/hooks/useActivePokemon'
 import Head from 'next/head'
 import Image from 'next/image'
-import { setuid } from 'process'
 import React, { useState } from 'react'
 
 const types = [
@@ -44,7 +43,7 @@ export default function Home() {
     setActiveType((prev) => (prev === type ? null : type))
   }
 
-  console.log('GET THE DATA....', data)
+  console.log('GET THE DATA....', activeType, data)
 
   const isActive = (type: string) => (activeType === type ? `opacity-100` : '')
   const isNotActive = (type: string) =>
