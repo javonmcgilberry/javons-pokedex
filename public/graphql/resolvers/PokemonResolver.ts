@@ -1,8 +1,8 @@
 import { IPokemon } from '@pokedex/types/IPokemon'
 import { IPokemonSpecies } from '@pokedex/types/PokemonSpecies'
-import { Resolvers } from '../../generated/graphql-types'
-import { loadData } from '../../loaders/PokemonLoader'
-import { loadSpeciesData } from '../../loaders/PokemonSpeciesLoader'
+import { Resolvers } from '../../../generated/graphql-types'
+import { loadData } from '../../../loaders/PokemonLoader'
+import { loadSpeciesData } from '../../../loaders/PokemonSpeciesLoader'
 
 const PokemonResolver: Resolvers['Pokemon'] = {
   id: async (parent, _, { pokemonDataLoader }) => {

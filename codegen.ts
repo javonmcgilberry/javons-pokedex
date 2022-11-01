@@ -1,8 +1,8 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
-  schema: `"${process.cwd()}/graphql/typedefs/*.graphql"`,
-  documents: `"${process.cwd()}/graphql/{queries,mutations}/*.graphql"`,
+  schema: `./graphql/typedefs/*.graphql`,
+  documents: './graphql/{queries,mutations}/*.graphql',
   hooks: { afterOneFileWrite: ['prettier --write'] },
   generates: {
     'generated/graphql-types.ts': {

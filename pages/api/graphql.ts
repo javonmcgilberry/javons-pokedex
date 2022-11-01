@@ -6,7 +6,7 @@ import PokemonApi from '../../api-utils/PokemonApi'
 
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { addResolversToSchema } from '@graphql-tools/schema'
-import resolvers from '../../graphql/resolvers'
+import resolvers from '../../public/graphql/resolvers'
 import { PokemonLoader } from '../../loaders/PokemonLoader'
 import { GraphQLContext } from '../../types/IPokemon'
 import { loadSchema } from '@graphql-tools/load'
