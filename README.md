@@ -50,12 +50,6 @@ The unit tests are in place to cover user behavior across the component library.
 
 **The integration tests are strongest barometer of success**, because while the unit tests cover the components in isolation, the integration tests are a true representation of how well these components are working _together_, and give me a confident pulse on how I am handling information from the true API, vs performing mocks.
 
--
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
 - [Next.js](https://nextjs.org/) - The web framework used
@@ -64,6 +58,9 @@ Add additional notes about how to deploy this on a live system
 - [GraphQL Yoga](https://www.the-guild.dev/graphql/yoga-server) - Dependency Management
 - [React Query](https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/) - Dependency Management
 - [GraphQL Codegen](https://www.the-guild.dev/graphql/codegen) - Dependency Management
+- [Eslint](https://eslint.org/) - Lint
+- [lint-staged](https://github.com/okonet/lint-staged) - Lint
+- [Prettier](https://prettier.io/) - Code Formatting
 - [TailwindCSS](https://tailwindcss.com/) - CSS
 - [React Spring](https://react-spring.dev/) - CSS
 
