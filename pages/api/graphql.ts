@@ -13,14 +13,10 @@ import { loadSchema } from '@graphql-tools/load'
 import { PokemonSpeciesLoader } from '@pokedex/loaders/PokemonSpeciesLoader'
 import { ChainLoader } from '@pokedex/loaders/ChainLoader'
 import { MoveLoader } from '@pokedex/loaders/MoveLoader'
-import { join } from 'path'
 
-const schema = await loadSchema(
-  join(__dirname, './schema/typedefs/*.graphql'),
-  {
-    loaders: [new GraphQLFileLoader()],
-  }
-)
+const schema = await loadSchema('../../schema/typedefs/*.graphql', {
+  loaders: [new GraphQLFileLoader()],
+})
 
 const schemaWithResolvers = addResolversToSchema({ schema, resolvers })
 
