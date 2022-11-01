@@ -11,8 +11,6 @@ export default function Home() {
   const { handleSetActivePokemon, activePokemon, isLoading, handlePagination } =
     useActivePokemon()
 
-  console.log('ACTIVE POKEMON', activePokemon)
-
   return (
     <div>
       <Head>

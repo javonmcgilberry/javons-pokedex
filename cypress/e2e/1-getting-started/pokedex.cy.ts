@@ -22,7 +22,7 @@ describe('pokedex app', () => {
 
   it(`AC 1:can search a catalog of Pokemon characters (Pokedex) by their name or by some of the characters in their name in order to return one or more Pokemon and their trading card attributes.`, () => {
     cy.wait(5000)
-    cy.get('input[name="pokemon-search"]', { timeout: 12000 }).type('pik')
+    cy.get('input[name="pokemon-search"]', { timeout: 12000 }).type('pikachu')
     cy.contains('pikachu').click()
     cy.contains('Base Stats', { timeout: 10000 }).click()
     cy.contains('Moves').click()
