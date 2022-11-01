@@ -4,9 +4,17 @@ import { GraphQLContext } from '../types/IPokemon'
 import { IPokemon } from '../types/IPokemon'
 
 const getPokemonById = async (id: string): Promise<IPokemon> => {
-  const responseBody = await fetch(`${BASE_URL}pokemon/${id}`)
-  const data = await responseBody.json()
-  return data
+  try {
+    const responseBody = await fetch(`${BASE_URL}pokemon/${id}`)
+    const data = await responseBody.json()
+    return data
+  } catch {
+    const speciesReponse = await fetch(`${BASE_URL}pokemon-species/${id}`)
+    const responseData = await speciesReponse.json()
+    const responseBody = await fetch(`${BASE_URL}pokemon/${responseData.id}`)
+    const data = await responseBody.json()
+    return data
+  }
 }
 
 const getPokemonByIds = async (ids: readonly string[]) => {

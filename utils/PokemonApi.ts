@@ -2,6 +2,7 @@ import { IEvolutionChain } from '@pokedex/types/EvolutionChain'
 import { BASE_URL } from '../consts/consts'
 import { IResult, IMoveDetails } from '../types/IPokemon'
 import {
+  AllPokemonByColorResponse,
   AllPokemonByTypeResponse,
   AllPokemonResponse,
   PaginationParams,
@@ -14,6 +15,7 @@ class PokemonApi {
     Pokemon: 'pokemon',
     Species: 'pokemon-species',
     Type: 'type',
+    PokemonColor: 'pokemon-color',
     Evolution: 'evolution-chain',
     move: 'move',
   }
@@ -55,6 +57,14 @@ class PokemonApi {
     const url = `${this.baseUrl}${this.resources.Type}/${type}`
     const { pokemon } = await fetchPokemonApiData<AllPokemonByTypeResponse>(url)
     return pokemon
+  }
+
+  static async allPokemonByColor(color: string) {
+    const url = `${this.baseUrl}${this.resources.PokemonColor}/${color}`
+    console.log('WHAT IS THE URL', url)
+    const { pokemon_species } =
+      await fetchPokemonApiData<AllPokemonByColorResponse>(url)
+    return pokemon_species
   }
 
   static async allPokemonTypes({ offset, limit }: PaginationParams) {

@@ -1,7 +1,10 @@
 import { GetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
 import usePokemonBackgroundColor from '@pokedex/hooks/usePokemonBackgroundColor'
 import PokemonDataModel from '@pokedex/models/PokemonDataModel'
+import { HandleSetActivePokemon } from '@pokedex/types/types'
 import Image from 'next/image'
+import { Fragment, useEffect } from 'react'
+import { animated, useSpring, useTransition } from 'react-spring'
 import {
   AttributeGroup,
   NavOption,
@@ -14,6 +17,7 @@ import ProgressBar from '../ProgressBar/ProgressBar'
 interface IPokemonPanel {
   pokemon: GetPokemonByNameOrIdQuery['pokemonById']
   isLoading: boolean
+  handleSetActivePokemon: HandleSetActivePokemon
   handlePagination: { next: () => void; prev: () => void }
 }
 
@@ -21,13 +25,24 @@ const PokemonPanel = ({
   pokemon,
   handlePagination,
   isLoading,
+  handleSetActivePokemon,
 }: IPokemonPanel) => {
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
+  const [fadeIn, set] = useSpring(() => ({ opacity: 0 }))
+
+  useEffect(() => {
+    if (!isLoading) {
+      set({ opacity: 1, from: { opacity: 0 } })
+    }
+  }, [set, pokemon, isLoading])
 
   return (
-    <div className={`${currentColor} rounded-b-[12rem] `}>
-      <div className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}>
+    <div className={`${currentColor} rounded-b-[12rem]`}>
+      <animated.div
+        style={fadeIn}
+        className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}
+      >
         <div className="flex h-full w-full justify-between">
           <div className="flex h-full w-1/2 flex-col justify-center">
             <div className="flex justify-between gap-2">
@@ -60,6 +75,7 @@ const PokemonPanel = ({
                     <NavOption>About</NavOption>
                     <NavOption>Base Stats</NavOption>
                     <NavOption>Moves</NavOption>
+                    <NavOption>Evolutions</NavOption>
                   </AttributeGroup>
                   <AttributePanels>
                     <AttributePanel>
@@ -135,7 +151,7 @@ const PokemonPanel = ({
                         </div>
                         {pokemonData.moves?.map((move) => {
                           return (
-                            <>
+                            <Fragment key={move.move}>
                               <div className="col-span-1 uppercase text-white">
                                 {move.move}
                               </div>
@@ -154,7 +170,57 @@ const PokemonPanel = ({
                                 )}
                                 <span>{move.type && move.type}</span>
                               </div>
-                            </>
+                            </Fragment>
+                          )
+                        })}
+                      </div>
+                    </AttributePanel>
+                    <AttributePanel>
+                      <div className="grid grid-cols-3 gap-4 py-4">
+                        {pokemonData.evolutions?.map((evolution) => {
+                          return (
+                            <div
+                              key={evolution?.name}
+                              className="col-span-1 font-bold text-white"
+                            >
+                              <div
+                                style={{
+                                  background: `radial-gradient(circle, ${pokemonData.backgroundColor}, rgba(6,11,40,1) 100%)`,
+                                }}
+                                className={`relative flex flex-col items-center rounded-[2rem] bg-opacity-50 p-4`}
+                              >
+                                {evolution?.id && (
+                                  <h1 className="absolute top-4 right-4 z-10 text-center text-[2rem] capitalize text-white opacity-60 drop-shadow-md">
+                                    <span className="flex justify-end">
+                                      #{evolution?.id}
+                                    </span>
+                                  </h1>
+                                )}
+                                <div className="m-4 flex">
+                                  {evolution?.image && (
+                                    <Image
+                                      src={evolution?.image}
+                                      className="relative h-full w-auto max-w-none object-contain drop-shadow-lg transition-all hover:scale-110"
+                                      alt={pokemonData.name}
+                                      width={1000}
+                                      height={1000}
+                                      quality={100}
+                                      onClick={() => {
+                                        handleSetActivePokemon(evolution.id)
+                                        window.scrollTo({
+                                          top: 0,
+                                          left: 0,
+                                          behavior: 'smooth',
+                                        })
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                                <h1 className="capitalize">
+                                  {evolution?.name}
+                                </h1>
+                              </div>
+                            </div>
                           )
                         })}
                       </div>
@@ -186,7 +252,7 @@ const PokemonPanel = ({
             </div>
           </div>
         </div>
-      </div>
+      </animated.div>
     </div>
   )
 }

@@ -1,5 +1,8 @@
-import { Resolvers } from '@pokedex/generated/graphql-types'
-import { GraphQLContext } from '@pokedex/types/IPokemon'
+import {
+  Resolvers,
+  ResolverTypeWrapper,
+} from '@pokedex/generated/graphql-types'
+import { GraphQLContext, IPokemonByTypeObject } from '@pokedex/types/IPokemon'
 
 const QueryResolver: Resolvers['Query'] = {
   allPokemon: async (_, { offset, limit }, { PokemonApi }: GraphQLContext) => {
@@ -8,6 +11,13 @@ const QueryResolver: Resolvers['Query'] = {
   },
   allPokemonByType: async (_, { type }, { PokemonApi }) => {
     return await PokemonApi.allPokemonByType(type)
+  },
+  allPokemonByColor: async (_, { type }, { PokemonApi }) => {
+    return (await (
+      await PokemonApi.allPokemonByColor(type)
+    ).map((res) => ({
+      pokemon: { ...res },
+    }))) as ResolverTypeWrapper<IPokemonByTypeObject>[]
   },
   pokemonSpeciesById: async (
     parent,

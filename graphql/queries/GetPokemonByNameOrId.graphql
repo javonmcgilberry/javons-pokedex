@@ -22,14 +22,23 @@ query GetPokemonByNameOrId($id: ID!) {
       }
       evolution_chain {
         is_baby
+        species {
+          name
+          id
+          sprites {
+            other {
+              official_artwork {
+                front_default
+              }
+            }
+          }
+        }
         evolves_to {
           species {
             name
+            id
             sprites {
               other {
-                home {
-                  front_default
-                }
                 official_artwork {
                   front_default
                 }
@@ -39,11 +48,9 @@ query GetPokemonByNameOrId($id: ID!) {
           evolves_to {
             species {
               name
+              id
               sprites {
                 other {
-                  home {
-                    front_default
-                  }
                   official_artwork {
                     front_default
                   }
@@ -55,9 +62,6 @@ query GetPokemonByNameOrId($id: ID!) {
                 name
                 sprites {
                   other {
-                    home {
-                      front_default
-                    }
                     official_artwork {
                       front_default
                     }

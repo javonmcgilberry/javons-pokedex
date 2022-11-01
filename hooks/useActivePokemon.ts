@@ -1,4 +1,5 @@
 import { useGetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
+import { HandleSetActivePokemon } from '@pokedex/types/types'
 import { useState, useCallback, useMemo, useEffect } from 'react'
 
 const useActivePokemon = () => {
@@ -28,11 +29,10 @@ const useActivePokemon = () => {
   const handleSetActivePokemon = useCallback((id: string) => {
     // POKEMON NAME MUST be lowercase.
     setActivePokemonData(id.toLowerCase())
-  }, [])
+  }, []) as HandleSetActivePokemon
 
   const handleKeypress = useCallback(
     (event: KeyboardEvent) => {
-      console.log(event.key)
       if (event.key === 'ArrowLeft') {
         handlePagination.prev()
         return

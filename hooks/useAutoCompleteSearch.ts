@@ -1,4 +1,7 @@
-import { useGetAllPokemonNamesQuery } from '@pokedex/generated/graphql-hooks'
+import {
+  GetAllPokemonNamesQuery,
+  useGetAllPokemonNamesQuery,
+} from '@pokedex/generated/graphql-hooks'
 import { getSearchResults } from '@pokedex/utils/helpers'
 import { useState, ChangeEvent } from 'react'
 
@@ -10,7 +13,9 @@ const useAutoCompleteSearch = ({
   const { data, isLoading } = useGetAllPokemonNamesQuery()
   const [value, setValue] = useState('')
   const searchResults = getSearchResults(data?.allPokemonSpecies, value)
-  const [suggestions, setSuggestions] = useState([''])
+  const [suggestions, setSuggestions] = useState<
+    GetAllPokemonNamesQuery['allPokemonSpecies']
+  >([{ name: 'bulbasaur', id: '1' }])
   const [suggestionsActive, setSuggestionsActive] = useState(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +23,7 @@ const useAutoCompleteSearch = ({
     setValue(query)
     if (query.length > 1) {
       const filterSuggestions = searchResults.filter(
-        (suggestion) => suggestion.toLowerCase().indexOf(query) > -1
+        (suggestion) => suggestion.name.toLowerCase().indexOf(query) > -1
       )
       setSuggestions(filterSuggestions)
       setSuggestionsActive(true)
@@ -27,9 +32,8 @@ const useAutoCompleteSearch = ({
     }
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    const input = e.target as HTMLElement
-    onPokemonNameSelected(input.innerText)
+  const handleClick = (e: string) => {
+    onPokemonNameSelected(e)
     setSuggestionsActive(false)
     setSuggestions([])
     setValue('')

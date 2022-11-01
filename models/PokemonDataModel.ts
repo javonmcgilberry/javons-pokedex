@@ -1,5 +1,4 @@
 import { GetPokemonByNameOrIdQuery } from '@pokedex/generated/graphql-hooks'
-import { stat } from 'fs'
 
 class PokemonDataModel {
   private metersToFeet = 3.281
@@ -22,8 +21,33 @@ class PokemonDataModel {
     }
   }
 
+  get backgroundColor() {
+    const colors: Record<string, string> = {
+      normal: '#A8A77A',
+      fire: '#EE8130',
+      water: '#6390F0',
+      electric: '#F7D02C',
+      grass: '#7AC74C',
+      ice: '#96D9D6',
+      fighting: '#C22E28',
+      poison: '#A33EA1',
+      ground: '#E2BF65',
+      flying: '#A98FF3',
+      psychic: '#F95587',
+      bug: '#A6B91A',
+      rock: '#B6A136',
+      ghost: '#735797',
+      dragon: '#6F35FC',
+      dark: '#705746',
+      steel: '#B7B7CE',
+      fairy: '#D685AD',
+    }
+    if (this.pokemon?.types && this.pokemon?.types[0].type)
+      return colors[this.pokemon?.types[0].type?.name]
+  }
+
   get pokedexNumber() {
-    return this.pokemon?.id
+    return this.pokemon?.id as string
   }
 
   private getTypeColor(type: string | undefined) {
@@ -125,6 +149,41 @@ class PokemonDataModel {
       type: move?.move?.type?.name as string,
       typeIcon: `/assets/icons/${move?.move?.type?.name}.svg` as string,
     }))
+  }
+
+  private getEvolution(pokemon: GetPokemonByNameOrIdQuery['pokemonById']) {
+    const evolutionsArray = [pokemon?.species?.evolution_chain?.species]
+    const evolutions = pokemon?.species?.evolution_chain?.evolves_to
+    if (pokemon?.species?.evolution_chain?.evolves_to?.length === 0)
+      return evolutionsArray
+    if (evolutions) {
+      for (const pokemon of evolutions) {
+        evolutionsArray.push(pokemon?.species)
+        if (pokemon?.evolves_to) {
+          evolutionsArray.push(pokemon.evolves_to[0]?.species)
+        }
+      }
+    }
+
+    return evolutionsArray
+      .map((pokemon) => ({
+        ...pokemon,
+        image: pokemon?.sprites?.other?.official_artwork?.front_default,
+      }))
+      .filter((pokemon) => pokemon.image !== undefined)
+  }
+
+  get evolutions() {
+    if (!this.pokemon?.species?.evolution_chain) {
+      return null
+    }
+    if (this.pokemon.species) {
+      return this.getEvolution(this.pokemon) as {
+        name: string
+        image: string
+        id: string
+      }[]
+    }
   }
 }
 export default PokemonDataModel

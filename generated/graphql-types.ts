@@ -153,6 +153,11 @@ export type Pokemon = {
   weight?: Maybe<Scalars['Int']>
 }
 
+export type PokemonByColorObject = {
+  __typename?: 'PokemonByColorObject'
+  pokemon?: Maybe<PokemonSpecies>
+}
+
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
   pokemon?: Maybe<Pokemon>
@@ -194,8 +199,9 @@ export type PokemonTypes = {
 export type Query = {
   __typename?: 'Query'
   allPokemon: Array<Pokemon>
+  allPokemonByColor: Array<PokemonByTypeObject>
   allPokemonByType: Array<PokemonByTypeObject>
-  allPokemonSpecies: Array<Result>
+  allPokemonSpecies: Array<Pokemon>
   allPokemonTypes: Array<Result>
   pokemonById?: Maybe<Pokemon>
   pokemonSpeciesById?: Maybe<PokemonSpecies>
@@ -204,6 +210,10 @@ export type Query = {
 export type QueryAllPokemonArgs = {
   limit?: InputMaybe<Scalars['Int']>
   offset: Scalars['Int']
+}
+
+export type QueryAllPokemonByColorArgs = {
+  type: Scalars['String']
 }
 
 export type QueryAllPokemonByTypeArgs = {
@@ -387,6 +397,11 @@ export type ResolversTypes = {
   OfficialArtwork: ResolverTypeWrapper<OfficialArtwork>
   OtherSprites: ResolverTypeWrapper<IOtherSprites>
   Pokemon: ResolverTypeWrapper<IPokemon>
+  PokemonByColorObject: ResolverTypeWrapper<
+    Omit<PokemonByColorObject, 'pokemon'> & {
+      pokemon?: Maybe<ResolversTypes['PokemonSpecies']>
+    }
+  >
   PokemonByTypeObject: ResolverTypeWrapper<IPokemonByTypeObject>
   PokemonSpecies: ResolverTypeWrapper<IPokemonSpecies>
   PokemonStat: ResolverTypeWrapper<IPokemonStat>
@@ -426,6 +441,9 @@ export type ResolversParentTypes = {
   OfficialArtwork: OfficialArtwork
   OtherSprites: IOtherSprites
   Pokemon: IPokemon
+  PokemonByColorObject: Omit<PokemonByColorObject, 'pokemon'> & {
+    pokemon?: Maybe<ResolversParentTypes['PokemonSpecies']>
+  }
   PokemonByTypeObject: IPokemonByTypeObject
   PokemonSpecies: IPokemonSpecies
   PokemonStat: IPokemonStat
@@ -688,6 +706,18 @@ export type PokemonResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type PokemonByColorObjectResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends ResolversParentTypes['PokemonByColorObject'] = ResolversParentTypes['PokemonByColorObject']
+> = {
+  pokemon?: Resolver<
+    Maybe<ResolversTypes['PokemonSpecies']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type PokemonByTypeObjectResolvers<
   ContextType = GraphQLContext,
   ParentType extends ResolversParentTypes['PokemonByTypeObject'] = ResolversParentTypes['PokemonByTypeObject']
@@ -770,6 +800,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryAllPokemonArgs, 'offset'>
   >
+  allPokemonByColor?: Resolver<
+    Array<ResolversTypes['PokemonByTypeObject']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAllPokemonByColorArgs, 'type'>
+  >
   allPokemonByType?: Resolver<
     Array<ResolversTypes['PokemonByTypeObject']>,
     ParentType,
@@ -777,7 +813,7 @@ export type QueryResolvers<
     RequireFields<QueryAllPokemonByTypeArgs, 'type'>
   >
   allPokemonSpecies?: Resolver<
-    Array<ResolversTypes['Result']>,
+    Array<ResolversTypes['Pokemon']>,
     ParentType,
     ContextType,
     RequireFields<QueryAllPokemonSpeciesArgs, 'offset'>
@@ -890,6 +926,7 @@ export type Resolvers<ContextType = GraphQLContext> = {
   OfficialArtwork?: OfficialArtworkResolvers<ContextType>
   OtherSprites?: OtherSpritesResolvers<ContextType>
   Pokemon?: PokemonResolvers<ContextType>
+  PokemonByColorObject?: PokemonByColorObjectResolvers<ContextType>
   PokemonByTypeObject?: PokemonByTypeObjectResolvers<ContextType>
   PokemonSpecies?: PokemonSpeciesResolvers<ContextType>
   PokemonStat?: PokemonStatResolvers<ContextType>

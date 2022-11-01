@@ -9,6 +9,10 @@ const PokemonResolver: Resolvers['Pokemon'] = {
     const data = await loadData(parent, pokemonDataLoader)
     return data.id
   },
+  weight: async (parent, _, { pokemonDataLoader }) => {
+    const data = await loadData(parent, pokemonDataLoader)
+    return data.weight
+  },
   base_experience: async (parent, _, { pokemonDataLoader }) => {
     const data = await loadData(parent, pokemonDataLoader)
     return data.base_experience

@@ -15,6 +15,7 @@ export interface IPokemon {
   id: string | null
   name: string | null
   height: number
+  weight: number
   types: IPokemonTypes[]
   stats: IPokemonStats[]
   sprites: ISprites

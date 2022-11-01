@@ -1,3 +1,4 @@
+import { GetAllPokemonQuery } from '@pokedex/generated/graphql-hooks'
 import { InputMaybe } from '../generated/graphql-types'
 import { IPokemonByTypeObject, IResult } from './IPokemon'
 
@@ -12,6 +13,10 @@ export interface AllPokemonByTypeResponse {
   pokemon: IPokemonByTypeObject[]
 }
 
+export interface AllPokemonByColorResponse {
+  pokemon_species: { name: string; url: string }[]
+}
+
 export interface PaginationParams {
   offset: number
   limit?: InputMaybe<number> | undefined
@@ -23,3 +28,7 @@ export interface URLParams {
   limit?: string
   id: string
 }
+
+export type HandleSetActivePokemon = (
+  id: GetAllPokemonQuery['allPokemon'][0]['id']
+) => void

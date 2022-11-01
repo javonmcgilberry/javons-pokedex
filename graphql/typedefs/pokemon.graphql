@@ -66,6 +66,10 @@ type PokemonByTypeObject {
   pokemon: Pokemon
 }
 
+type PokemonByColorObject {
+  pokemon: PokemonSpecies
+}
+
 type Moves {
   move: MoveDetails
 }

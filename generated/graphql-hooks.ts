@@ -151,6 +151,11 @@ export type Pokemon = {
   weight?: Maybe<Scalars['Int']>
 }
 
+export type PokemonByColorObject = {
+  __typename?: 'PokemonByColorObject'
+  pokemon?: Maybe<PokemonSpecies>
+}
+
 export type PokemonByTypeObject = {
   __typename?: 'PokemonByTypeObject'
   pokemon?: Maybe<Pokemon>
@@ -192,8 +197,9 @@ export type PokemonTypes = {
 export type Query = {
   __typename?: 'Query'
   allPokemon: Array<Pokemon>
+  allPokemonByColor: Array<PokemonByTypeObject>
   allPokemonByType: Array<PokemonByTypeObject>
-  allPokemonSpecies: Array<Result>
+  allPokemonSpecies: Array<Pokemon>
   allPokemonTypes: Array<Result>
   pokemonById?: Maybe<Pokemon>
   pokemonSpeciesById?: Maybe<PokemonSpecies>
@@ -202,6 +208,10 @@ export type Query = {
 export type QueryAllPokemonArgs = {
   limit?: InputMaybe<Scalars['Int']>
   offset: Scalars['Int']
+}
+
+export type QueryAllPokemonByColorArgs = {
+  type: Scalars['String']
 }
 
 export type QueryAllPokemonByTypeArgs = {
@@ -263,18 +273,57 @@ export type GetAllPokemonQuery = {
     __typename?: 'Pokemon'
     id?: string | null
     name: string
+    weight?: number | null
+    height?: number | null
+    base_experience?: number | null
+    types?: Array<{
+      __typename?: 'PokemonTypes'
+      type?: { __typename?: 'PokemonTypeDetails'; name: string } | null
+    }> | null
     sprites: {
       __typename?: 'Sprites'
       other?: {
         __typename?: 'OtherSprites'
-        home?: { __typename?: 'Home'; front_default?: string | null } | null
+        official_artwork?: {
+          __typename?: 'OfficialArtwork'
+          front_default?: string | null
+        } | null
       } | null
     }
-    stats?: Array<{
-      __typename?: 'PokemonStats'
-      base_stat: number
-      stat?: { __typename?: 'PokemonStat'; name: string } | null
-    }> | null
+  }>
+}
+
+export type GetAllPokemonByColorQueryVariables = Exact<{
+  color: Scalars['String']
+}>
+
+export type GetAllPokemonByColorQuery = {
+  __typename?: 'Query'
+  allPokemonByColor: Array<{
+    __typename?: 'PokemonByTypeObject'
+    pokemon?: {
+      __typename?: 'Pokemon'
+      id?: string | null
+      name: string
+      types?: Array<{
+        __typename?: 'PokemonTypes'
+        type?: {
+          __typename?: 'PokemonTypeDetails'
+          name: string
+          url: string
+        } | null
+      }> | null
+      sprites: {
+        __typename?: 'Sprites'
+        other?: {
+          __typename?: 'OtherSprites'
+          official_artwork?: {
+            __typename?: 'OfficialArtwork'
+            front_default?: string | null
+          } | null
+        } | null
+      }
+    } | null
   }>
 }
 
@@ -316,7 +365,42 @@ export type GetAllPokemonNamesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllPokemonNamesQuery = {
   __typename?: 'Query'
-  allPokemonSpecies: Array<{ __typename?: 'Result'; name: string }>
+  allPokemonSpecies: Array<{
+    __typename?: 'Pokemon'
+    name: string
+    id?: string | null
+  }>
+}
+
+export type GetAllPokemonSpeciesQueryVariables = Exact<{
+  offset: Scalars['Int']
+  limit?: InputMaybe<Scalars['Int']>
+}>
+
+export type GetAllPokemonSpeciesQuery = {
+  __typename?: 'Query'
+  allPokemonSpecies: Array<{
+    __typename?: 'Pokemon'
+    id?: string | null
+    name: string
+    weight?: number | null
+    height?: number | null
+    base_experience?: number | null
+    types?: Array<{
+      __typename?: 'PokemonTypes'
+      type?: { __typename?: 'PokemonTypeDetails'; name: string } | null
+    }> | null
+    sprites: {
+      __typename?: 'Sprites'
+      other?: {
+        __typename?: 'OtherSprites'
+        official_artwork?: {
+          __typename?: 'OfficialArtwork'
+          front_default?: string | null
+        } | null
+      } | null
+    }
+  }>
 }
 
 export type GetPokemonByNameOrIdQueryVariables = Exact<{
@@ -358,19 +442,31 @@ export type GetPokemonByNameOrIdQuery = {
       evolution_chain?: {
         __typename?: 'Chain'
         is_baby?: boolean | null
+        species?: {
+          __typename?: 'Pokemon'
+          name: string
+          id?: string | null
+          sprites: {
+            __typename?: 'Sprites'
+            other?: {
+              __typename?: 'OtherSprites'
+              official_artwork?: {
+                __typename?: 'OfficialArtwork'
+                front_default?: string | null
+              } | null
+            } | null
+          }
+        } | null
         evolves_to?: Array<{
           __typename?: 'EvolvesToDetails'
           species?: {
             __typename?: 'Pokemon'
             name: string
+            id?: string | null
             sprites: {
               __typename?: 'Sprites'
               other?: {
                 __typename?: 'OtherSprites'
-                home?: {
-                  __typename?: 'Home'
-                  front_default?: string | null
-                } | null
                 official_artwork?: {
                   __typename?: 'OfficialArtwork'
                   front_default?: string | null
@@ -383,14 +479,11 @@ export type GetPokemonByNameOrIdQuery = {
             species?: {
               __typename?: 'Pokemon'
               name: string
+              id?: string | null
               sprites: {
                 __typename?: 'Sprites'
                 other?: {
                   __typename?: 'OtherSprites'
-                  home?: {
-                    __typename?: 'Home'
-                    front_default?: string | null
-                  } | null
                   official_artwork?: {
                     __typename?: 'OfficialArtwork'
                     front_default?: string | null
@@ -407,10 +500,6 @@ export type GetPokemonByNameOrIdQuery = {
                   __typename?: 'Sprites'
                   other?: {
                     __typename?: 'OtherSprites'
-                    home?: {
-                      __typename?: 'Home'
-                      front_default?: string | null
-                    } | null
                     official_artwork?: {
                       __typename?: 'OfficialArtwork'
                       front_default?: string | null
@@ -457,19 +546,21 @@ export const GetAllPokemonDocument = `
   allPokemon(offset: $offset, limit: $limit) {
     id
     name
+    weight
+    height
+    types {
+      type {
+        name
+      }
+    }
     sprites {
       other {
-        home {
+        official_artwork {
           front_default
         }
       }
     }
-    stats {
-      base_stat
-      stat {
-        name
-      }
-    }
+    base_experience
   }
 }
     `
@@ -484,6 +575,44 @@ export const useGetAllPokemonQuery = <
     ['GetAllPokemon', variables],
     fetcher<GetAllPokemonQuery, GetAllPokemonQueryVariables>(
       GetAllPokemonDocument,
+      variables
+    ),
+    options
+  )
+export const GetAllPokemonByColorDocument = `
+    query GetAllPokemonByColor($color: String!) {
+  allPokemonByColor(type: $color) {
+    pokemon {
+      id
+      name
+      types {
+        type {
+          name
+          url
+        }
+      }
+      sprites {
+        other {
+          official_artwork {
+            front_default
+          }
+        }
+      }
+    }
+  }
+}
+    `
+export const useGetAllPokemonByColorQuery = <
+  TData = GetAllPokemonByColorQuery,
+  TError = unknown
+>(
+  variables: GetAllPokemonByColorQueryVariables,
+  options?: UseQueryOptions<GetAllPokemonByColorQuery, TError, TData>
+) =>
+  useQuery<GetAllPokemonByColorQuery, TError, TData>(
+    ['GetAllPokemonByColor', variables],
+    fetcher<GetAllPokemonByColorQuery, GetAllPokemonByColorQueryVariables>(
+      GetAllPokemonByColorDocument,
       variables
     ),
     options
@@ -530,6 +659,7 @@ export const GetAllPokemonNamesDocument = `
     query GetAllPokemonNames {
   allPokemonSpecies(offset: 0, limit: 905) {
     name
+    id
   }
 }
     `
@@ -546,6 +676,44 @@ export const useGetAllPokemonNamesQuery = <
       : ['GetAllPokemonNames', variables],
     fetcher<GetAllPokemonNamesQuery, GetAllPokemonNamesQueryVariables>(
       GetAllPokemonNamesDocument,
+      variables
+    ),
+    options
+  )
+export const GetAllPokemonSpeciesDocument = `
+    query GetAllPokemonSpecies($offset: Int!, $limit: Int) {
+  allPokemonSpecies(offset: $offset, limit: $limit) {
+    id
+    name
+    weight
+    height
+    types {
+      type {
+        name
+      }
+    }
+    sprites {
+      other {
+        official_artwork {
+          front_default
+        }
+      }
+    }
+    base_experience
+  }
+}
+    `
+export const useGetAllPokemonSpeciesQuery = <
+  TData = GetAllPokemonSpeciesQuery,
+  TError = unknown
+>(
+  variables: GetAllPokemonSpeciesQueryVariables,
+  options?: UseQueryOptions<GetAllPokemonSpeciesQuery, TError, TData>
+) =>
+  useQuery<GetAllPokemonSpeciesQuery, TError, TData>(
+    ['GetAllPokemonSpecies', variables],
+    fetcher<GetAllPokemonSpeciesQuery, GetAllPokemonSpeciesQueryVariables>(
+      GetAllPokemonSpeciesDocument,
       variables
     ),
     options
@@ -575,14 +743,23 @@ export const GetPokemonByNameOrIdDocument = `
       }
       evolution_chain {
         is_baby
+        species {
+          name
+          id
+          sprites {
+            other {
+              official_artwork {
+                front_default
+              }
+            }
+          }
+        }
         evolves_to {
           species {
             name
+            id
             sprites {
               other {
-                home {
-                  front_default
-                }
                 official_artwork {
                   front_default
                 }
@@ -592,11 +769,9 @@ export const GetPokemonByNameOrIdDocument = `
           evolves_to {
             species {
               name
+              id
               sprites {
                 other {
-                  home {
-                    front_default
-                  }
                   official_artwork {
                     front_default
                   }
@@ -608,9 +783,6 @@ export const GetPokemonByNameOrIdDocument = `
                 name
                 sprites {
                   other {
-                    home {
-                      front_default
-                    }
                     official_artwork {
                       front_default
                     }

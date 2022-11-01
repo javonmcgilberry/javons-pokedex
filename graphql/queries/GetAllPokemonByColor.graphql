@@ -1,0 +1,21 @@
+query GetAllPokemonByColor($color: String!) {
+  allPokemonByColor(type: $color) {
+    pokemon {
+      id
+      name
+      types {
+        type {
+          name
+          url
+        }
+      }
+      sprites {
+        other {
+          official_artwork {
+            front_default
+          }
+        }
+      }
+    }
+  }
+}

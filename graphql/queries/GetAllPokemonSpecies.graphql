@@ -1,5 +1,5 @@
-query GetAllPokemon($offset: Int!, $limit: Int) {
-  allPokemon(offset: $offset, limit: $limit) {
+query GetAllPokemonSpecies($offset: Int!, $limit: Int) {
+  allPokemonSpecies(offset: $offset, limit: $limit) {
     id
     name
     weight

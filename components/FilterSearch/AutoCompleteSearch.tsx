@@ -1,8 +1,7 @@
 import useAutoCompleteSearch from '@pokedex/hooks/useAutoCompleteSearch'
-import { HandleSetActivePokemon } from '@pokedex/types/types'
 
 interface IAutoCompleteSearch {
-  handleSetActivePokemon: HandleSetActivePokemon
+  handleSetActivePokemon: (pokemonName: string) => void
 }
 
 const AutoCompleteSearch = ({
@@ -23,7 +22,7 @@ const AutoCompleteSearch = ({
       <div className="relative text-gray-600">
         <input
           type="search"
-          placeholder="Find a Pokemon..."
+          placeholder="Click a type to filter by both name and type"
           value={value}
           disabled={isLoading}
           onChange={handleChange}
