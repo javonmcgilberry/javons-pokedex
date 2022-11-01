@@ -8,16 +8,10 @@ interface IAutoCompleteSearch {
 const AutoCompleteSearch = ({
   handleSetActivePokemon,
 }: IAutoCompleteSearch) => {
-  const {
-    value,
-    handleChange,
-    suggestions,
-    suggestionsActive,
-    handleClick,
-    isLoading,
-  } = useAutoCompleteSearch({
-    onPokemonNameSelected: handleSetActivePokemon,
-  })
+  const { value, handleChange, suggestions, suggestionsActive, handleClick } =
+    useAutoCompleteSearch({
+      onPokemonNameSelected: handleSetActivePokemon,
+    })
   return (
     <div className="relative">
       <div className="relative text-gray-600">
@@ -26,7 +20,6 @@ const AutoCompleteSearch = ({
           name="pokemon-search"
           placeholder="Find a Pokemon..."
           value={value}
-          disabled={isLoading}
           onChange={handleChange}
           className="z-10 h-10 w-full rounded-md bg-white px-5 pr-10 text-sm drop-shadow-md focus:outline-none"
         />

@@ -20,9 +20,9 @@ describe('pokedex app', () => {
     cy.visit('http://localhost:3000')
   })
 
-  it(`AC 1:can search a catalog of Pokemon characters (Pokedex) by their name or by some of the characters 
-  in their name in order to return one or more Pokemon and their trading card attributes.`, () => {
-    cy.get('input[name="pokemon-search"]').type('pik')
+  it(`AC 1:can search a catalog of Pokemon characters (Pokedex) by their name or by some of the characters in their name in order to return one or more Pokemon and their trading card attributes.`, () => {
+    cy.wait(5000)
+    cy.get('input[name="pokemon-search"]', { timeout: 12000 }).type('pik')
     cy.contains('pikachu').click()
     cy.contains('Base Stats', { timeout: 10000 }).click()
     cy.contains('Moves').click()
@@ -30,6 +30,7 @@ describe('pokedex app', () => {
   })
 
   it(`AC 2: can display all pokemon types and species`, () => {
+    cy.wait(5000)
     cy.get('button').contains('100').click()
     cy.get('button').contains('type').click()
     cy.get('[alt="normal"]').should('be.visible')
@@ -53,6 +54,7 @@ describe('pokedex app', () => {
   })
 
   it(`AC 3: can display the amount of pokemon as well as pokemon types, allowing for filtering`, () => {
+    cy.wait(5000)
     cy.get('button').contains('2').click()
     cy.get('button').contains('3').click()
     cy.get('button').contains('4').click()
@@ -118,6 +120,7 @@ describe('pokedex app', () => {
   })
 
   it(`AC 4: can display pictures and further identifying attributes for a selected pokemon`, () => {
+    cy.wait(5000)
     cy.get('[alt="venusaur"]').click()
     cy.contains('Base Stats').click()
     cy.contains('Moves').click()
@@ -125,6 +128,7 @@ describe('pokedex app', () => {
   })
 
   it(`AC 5: can be sorted by color or type`, () => {
+    cy.wait(5000)
     cy.contains('type').click()
     cy.contains('color').click()
     cy.contains('reset').click()
