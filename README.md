@@ -66,7 +66,7 @@ The unit tests are in place to cover user behavior across the component library.
 
 ## Authors
 
-- **Javon McGilberry** - _Initial work_ - [PurpleBooth](https://github.com/javonmcgilberry)
+- **Javon McGilberry**
 
 ## License
 
