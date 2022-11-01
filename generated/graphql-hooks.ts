@@ -1,5 +1,4 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { graphql, ResponseResolver, GraphQLRequest, GraphQLContext } from 'msw'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -14,7 +13,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 
 function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
   return async (): Promise<TData> => {
-    const res = await fetch('http://localhost:3000/api/graphql' as string, {
+    const res = await fetch('/api/graphql' as string, {
       method: 'POST',
       body: JSON.stringify({ query, variables }),
     })
@@ -845,142 +844,4 @@ export const useGetPokemonByNameOrIdQuery = <
       variables
     ),
     options
-  )
-const test = graphql.link('http://localhost:3000/api/graphql')
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetAllPokemonQueryTest((req, res, ctx) => {
- *   const { offset, limit } = req.variables;
- *   return res(
- *     ctx.data({ allPokemon })
- *   )
- * })
- */
-export const mockGetAllPokemonQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetAllPokemonQueryVariables>,
-    GraphQLContext<GetAllPokemonQuery>,
-    any
-  >
-) =>
-  test.query<GetAllPokemonQuery, GetAllPokemonQueryVariables>(
-    'GetAllPokemon',
-    resolver
-  )
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetAllPokemonByColorQueryTest((req, res, ctx) => {
- *   const { color } = req.variables;
- *   return res(
- *     ctx.data({ allPokemonByColor })
- *   )
- * })
- */
-export const mockGetAllPokemonByColorQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetAllPokemonByColorQueryVariables>,
-    GraphQLContext<GetAllPokemonByColorQuery>,
-    any
-  >
-) =>
-  test.query<GetAllPokemonByColorQuery, GetAllPokemonByColorQueryVariables>(
-    'GetAllPokemonByColor',
-    resolver
-  )
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetAllPokemonByTypeQueryTest((req, res, ctx) => {
- *   const { type } = req.variables;
- *   return res(
- *     ctx.data({ allPokemonByType })
- *   )
- * })
- */
-export const mockGetAllPokemonByTypeQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetAllPokemonByTypeQueryVariables>,
-    GraphQLContext<GetAllPokemonByTypeQuery>,
-    any
-  >
-) =>
-  test.query<GetAllPokemonByTypeQuery, GetAllPokemonByTypeQueryVariables>(
-    'GetAllPokemonByType',
-    resolver
-  )
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetAllPokemonNamesQueryTest((req, res, ctx) => {
- *   return res(
- *     ctx.data({ allPokemonSpecies })
- *   )
- * })
- */
-export const mockGetAllPokemonNamesQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetAllPokemonNamesQueryVariables>,
-    GraphQLContext<GetAllPokemonNamesQuery>,
-    any
-  >
-) =>
-  test.query<GetAllPokemonNamesQuery, GetAllPokemonNamesQueryVariables>(
-    'GetAllPokemonNames',
-    resolver
-  )
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetAllPokemonSpeciesQueryTest((req, res, ctx) => {
- *   const { offset, limit } = req.variables;
- *   return res(
- *     ctx.data({ allPokemonSpecies })
- *   )
- * })
- */
-export const mockGetAllPokemonSpeciesQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetAllPokemonSpeciesQueryVariables>,
-    GraphQLContext<GetAllPokemonSpeciesQuery>,
-    any
-  >
-) =>
-  test.query<GetAllPokemonSpeciesQuery, GetAllPokemonSpeciesQueryVariables>(
-    'GetAllPokemonSpecies',
-    resolver
-  )
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetPokemonByNameOrIdQueryTest((req, res, ctx) => {
- *   const { id } = req.variables;
- *   return res(
- *     ctx.data({ pokemonById })
- *   )
- * })
- */
-export const mockGetPokemonByNameOrIdQueryTest = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetPokemonByNameOrIdQueryVariables>,
-    GraphQLContext<GetPokemonByNameOrIdQuery>,
-    any
-  >
-) =>
-  test.query<GetPokemonByNameOrIdQuery, GetPokemonByNameOrIdQueryVariables>(
-    'GetPokemonByNameOrId',
-    resolver
   )
