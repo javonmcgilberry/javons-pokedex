@@ -14,7 +14,7 @@ import { PokemonSpeciesLoader } from '@pokedex/loaders/PokemonSpeciesLoader'
 import { ChainLoader } from '@pokedex/loaders/ChainLoader'
 import { MoveLoader } from '@pokedex/loaders/MoveLoader'
 
-const schema = await loadSchema(`${process.cwd()}/graphql/typedefs/*.graphql`, {
+const schema = await loadSchema(`../../graphql/typedefs/*.graphql`, {
   loaders: [new GraphQLFileLoader()],
 })
 
