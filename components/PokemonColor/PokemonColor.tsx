@@ -1,6 +1,5 @@
 import { POKEMON_COLORS } from '@pokedex/consts/consts'
 import { isActive, isNotActive } from '@pokedex/utils/helpers'
-import Image from 'next/image'
 
 interface IPokemonColor {
   type: typeof POKEMON_COLORS[number]

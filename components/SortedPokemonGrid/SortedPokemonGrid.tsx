@@ -1,8 +1,26 @@
-import { GetAllPokemonByTypeQuery } from '@pokedex/generated/graphql-hooks'
+import {
+  GetAllPokemonByColorQuery,
+  GetAllPokemonByTypeQuery,
+} from '@pokedex/generated/graphql-hooks'
+import { HandleSetActivePokemon } from '@pokedex/types/types'
 import { memo } from 'react'
 import PokemonCard from '../PokemonCard/PokemonCard'
 
-const SortedPokemonGrid = ({ isLoading, data, handleSetActivePokemon }) => {
+interface ISortedPokemonGrid {
+  isLoading: boolean
+  handleSetActivePokemon: HandleSetActivePokemon
+  data:
+    | GetAllPokemonByTypeQuery['allPokemonByType']
+    | GetAllPokemonByColorQuery['allPokemonByColor']
+    | undefined
+}
+
+const SortedPokemonGrid = ({
+  isLoading,
+  data,
+  handleSetActivePokemon,
+}: ISortedPokemonGrid) => {
+  console.log('SORTED GRID', { data, isLoading, handleSetActivePokemon })
   return (
     <div className="relative grid grid-cols-8 gap-4 drop-shadow-md">
       {isLoading &&

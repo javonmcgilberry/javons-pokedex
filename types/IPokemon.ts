@@ -1,5 +1,5 @@
 import DataLoader from 'dataloader'
-import PokemonApi from '../utils/PokemonApi'
+import PokemonApi from '../api-utils/PokemonApi'
 import { IPokemonSpecies } from './PokemonSpecies'
 import { IEvolutionChain } from './EvolutionChain'
 

@@ -10,7 +10,7 @@ const QueryResolver: Resolvers['Query'] = {
     return response
   },
   allPokemonByType: async (_, { type }, { PokemonApi }) => {
-    return await PokemonApi.allPokemonByType(type)
+    return PokemonApi.allPokemonByType(type)
   },
   allPokemonByColor: async (_, { type }, { PokemonApi }) => {
     return (await (
@@ -34,21 +34,21 @@ const QueryResolver: Resolvers['Query'] = {
     { pokemonDataLoader }: GraphQLContext
   ) => {
     const { id } = args
-    return await pokemonDataLoader.load(String(id))
+    return pokemonDataLoader.load(String(id))
   },
   allPokemonTypes: async (
     parent,
     { offset, limit },
     { PokemonApi }: GraphQLContext
   ) => {
-    return await PokemonApi.allPokemonTypes({ offset, limit })
+    return PokemonApi.allPokemonTypes({ offset, limit })
   },
   allPokemonSpecies: async (
     parent,
     { offset, limit },
     { PokemonApi }: GraphQLContext
   ) => {
-    return await PokemonApi.allPokemonSpecies({ offset, limit })
+    return PokemonApi.allPokemonSpecies({ offset, limit })
   },
 }
 

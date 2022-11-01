@@ -2,7 +2,7 @@
 // rename to avoid ts hook warning
 import { useResponseCache as responseCache } from '@envelop/response-cache'
 import { createServer } from '@graphql-yoga/node'
-import PokemonApi from '../../utils/PokemonApi'
+import PokemonApi from '../../api-utils/PokemonApi'
 
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { addResolversToSchema } from '@graphql-tools/schema'

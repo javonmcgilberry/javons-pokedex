@@ -22,7 +22,6 @@ export const PaginationComponent: React.FC<Props> = ({
               boxShadow: `transparent 0px 0px 0px 1px, transparent 0px 0px 0px 4px, rgba(0, 0, 0, 0.18) 0px 2px 4px`,
             }}
             className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
-            // className={classNames([styles.pageItem, styles.sides].join(' '))}
           >
             &lt;
           </button>

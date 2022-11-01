@@ -8,16 +8,13 @@ export const fetchPokemonApiData = <T>(
 ): Promise<T> => {
   return fetch(input, {
     ...init,
-    // ensure cookies are always passed
     credentials: 'same-origin',
     headers: {
       ...init.headers,
-      // always include this header
       'Content-Type': 'application/json',
     },
   })
     .then((resp) => {
-      // Throw error for error status codes (400+)
       if (!resp.ok) {
         throw new Error(resp.statusText)
       }

@@ -25,5 +25,6 @@ type Active = (
 ) => string
 export const isActive: Active = (activeType, type) =>
   activeType === type ? `opacity-100` : ''
-export const isNotActive: Active = (activeType, type) =>
-  activeType !== null && activeType !== type ? `opacity-50` : ''
+export const isNotActive: Active = (activeType, type) => {
+  return activeType !== null && activeType !== type ? `opacity-50` : ''
+}

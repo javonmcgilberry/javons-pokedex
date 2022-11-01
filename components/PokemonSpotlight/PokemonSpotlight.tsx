@@ -4,29 +4,28 @@ import PokemonDataModel from '@pokedex/models/PokemonDataModel'
 import { HandleSetActivePokemon } from '@pokedex/types/types'
 import Image from 'next/image'
 import { Fragment, useEffect } from 'react'
-import { animated, useSpring, useTransition } from 'react-spring'
-import {
-  AttributeGroup,
-  NavOption,
-  AttributePanel,
-  AttributePanels,
-  AttributeNavigation,
-} from '../AttributeNavigation'
+import { animated, useSpring } from 'react-spring'
+import { AttributeGroup } from '../AttributeNavigation/AttributeGroup/AttributeGroup'
+import { AttributeNavigation } from '../AttributeNavigation/AttributeNavigation'
+import { AttributeOption } from '../AttributeNavigation/AttributeOption/AttributeOption'
+import { AttributePanel } from '../AttributeNavigation/AttributePanel/AttributePanel'
+import { AttributePanels } from '../AttributeNavigation/AttributePanels/AttributePanels'
+
 import ProgressBar from '../ProgressBar/ProgressBar'
 
-interface IPokemonPanel {
+interface IPokemonSpotlight {
   pokemon: GetPokemonByNameOrIdQuery['pokemonById']
   isLoading: boolean
   handleSetActivePokemon: HandleSetActivePokemon
   handlePagination: { next: () => void; prev: () => void }
 }
 
-const PokemonPanel = ({
+const PokemonSpotlight = ({
   pokemon,
   handlePagination,
   isLoading,
   handleSetActivePokemon,
-}: IPokemonPanel) => {
+}: IPokemonSpotlight) => {
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
   const [fadeIn, set] = useSpring(() => ({ opacity: 0 }))
@@ -39,11 +38,11 @@ const PokemonPanel = ({
 
   return (
     <div className={`${currentColor} rounded-b-[12rem]`}>
-      <animated.div
-        style={fadeIn}
-        className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}
-      >
-        <div className="flex h-full w-full justify-between">
+      <div className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}>
+        <animated.div
+          style={fadeIn}
+          className="flex h-full w-full justify-between"
+        >
           <div className="flex h-full w-1/2 flex-col justify-center">
             <div className="flex justify-between gap-2">
               <Image
@@ -56,7 +55,7 @@ const PokemonPanel = ({
               />
               <h1 className="text-center text-[5rem] capitalize text-white drop-shadow-md">
                 <span className="flex">
-                  {pokemonData?.name || 'Loading Pokemon...'}
+                  {!isLoading ? pokemonData?.name : 'Loading Pokemon...'}
                 </span>
               </h1>
               <Image
@@ -70,12 +69,15 @@ const PokemonPanel = ({
             </div>
             {!isLoading && (
               <div className="flex max-h-[50vh] min-h-min flex-col overflow-hidden rounded-lg bg-white bg-opacity-30 p-4 drop-shadow-md">
-                <AttributeNavigation id="test-1" navColor={currentColor}>
+                <AttributeNavigation
+                  id="pokemon-attributes"
+                  navColor={currentColor}
+                >
                   <AttributeGroup>
-                    <NavOption>About</NavOption>
-                    <NavOption>Base Stats</NavOption>
-                    <NavOption>Moves</NavOption>
-                    <NavOption>Evolutions</NavOption>
+                    <AttributeOption>About</AttributeOption>
+                    <AttributeOption>Base Stats</AttributeOption>
+                    <AttributeOption>Moves</AttributeOption>
+                    <AttributeOption>Evolutions</AttributeOption>
                   </AttributeGroup>
                   <AttributePanels>
                     <AttributePanel>
@@ -109,7 +111,7 @@ const PokemonPanel = ({
                                   height={32}
                                 />
                               )}
-                              <span>{name && name}</span>
+                              <span>{name}</span>
                             </div>
                           ))}
                         </div>
@@ -119,7 +121,7 @@ const PokemonPanel = ({
                       <div className="grid grid-cols-5 gap-4 py-4">
                         {pokemonData.stats?.map((stat) => {
                           return (
-                            <>
+                            <Fragment key={stat.stat?.name}>
                               <div className="col-span-2 uppercase text-white">
                                 {stat.stat?.name}
                               </div>
@@ -133,7 +135,7 @@ const PokemonPanel = ({
                                   maxValue={stat.max}
                                 />
                               </div>
-                            </>
+                            </Fragment>
                           )
                         })}
                       </div>
@@ -168,7 +170,7 @@ const PokemonPanel = ({
                                     height={32}
                                   />
                                 )}
-                                <span>{move.type && move.type}</span>
+                                <span>{move.type}</span>
                               </div>
                             </Fragment>
                           )
@@ -231,30 +233,31 @@ const PokemonPanel = ({
             )}
           </div>
           <div className="relative flex h-full w-1/2 flex-col justify-center">
-            {pokemonData?.pokedexNumber && (
-              <h1 className="absolute top-0 right-0 z-10 text-center text-[8rem] capitalize text-white opacity-60 drop-shadow-md">
-                <span className="flex justify-end">
-                  #{pokemonData?.pokedexNumber}
-                </span>
-              </h1>
+            {!isLoading && (
+              <>
+                <h1 className="absolute top-0 right-0 z-10 text-center text-[8rem] capitalize text-white opacity-60 drop-shadow-md">
+                  <span className="flex justify-end">
+                    #{pokemonData?.pokedexNumber}
+                  </span>
+                </h1>
+
+                <div>
+                  <Image
+                    src={pokemonData?.image}
+                    className="relative h-full w-auto max-w-none object-contain drop-shadow-lg"
+                    alt={pokemonData.name}
+                    width={1000}
+                    height={1000}
+                    quality={100}
+                  />
+                </div>
+              </>
             )}
-            <div>
-              {pokemonData?.image && (
-                <Image
-                  src={pokemonData?.image}
-                  className="relative h-full w-auto max-w-none object-contain drop-shadow-lg"
-                  alt={pokemonData.name}
-                  width={1000}
-                  height={1000}
-                  quality={100}
-                />
-              )}
-            </div>
           </div>
-        </div>
-      </animated.div>
+        </animated.div>
+      </div>
     </div>
   )
 }
 
-export default PokemonPanel
+export default PokemonSpotlight

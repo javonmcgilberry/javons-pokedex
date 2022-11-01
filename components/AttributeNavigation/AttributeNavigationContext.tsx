@@ -11,10 +11,5 @@ export function useTabsContext() {
     id: string
   }
 
-  if (!context) {
-    throw new Error(
-      'navigation component must be rendered from within context provider'
-    )
-  }
   return context
 }

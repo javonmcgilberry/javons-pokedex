@@ -3,12 +3,12 @@ import React from 'react'
 import { useTabsContext } from '../AttributeNavigationContext'
 import { IAttributeNavigationProps } from '../AttributeNavigation.types'
 
-export const NavOption = ({
+export const AttributeOption = ({
   children,
   onClick,
   tabIndex,
 }: IAttributeNavigationProps) => {
-  const { activeButton, navColor, id } = useTabsContext()
+  const { activeButton, navColor } = useTabsContext()
   const isActive = activeButton === tabIndex
   return (
     <button

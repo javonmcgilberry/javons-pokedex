@@ -1,5 +1,5 @@
 import { IEvolutionChain } from '@pokedex/types/EvolutionChain'
-import PokemonApi from '@pokedex/utils/PokemonApi'
+import PokemonApi from '@pokedex/api-utils/PokemonApi'
 import DataLoader from 'dataloader'
 import { GraphQLContext, IResult } from '../types/IPokemon'
 

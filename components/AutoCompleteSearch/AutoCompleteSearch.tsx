@@ -22,7 +22,8 @@ const AutoCompleteSearch = ({
     <div className="relative">
       <div className="relative text-gray-600">
         <input
-          type="search"
+          type="text"
+          name="pokemon-search"
           placeholder="Find a Pokemon..."
           value={value}
           disabled={isLoading}

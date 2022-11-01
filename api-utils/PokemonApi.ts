@@ -6,9 +6,8 @@ import {
   AllPokemonByTypeResponse,
   AllPokemonResponse,
   PaginationParams,
-  URLParams,
 } from '../types/types'
-import { fetchPokemonApiData } from './fetchPokeApi'
+import { fetchPokemonApiData } from './fetchPokemonApi'
 
 class PokemonApi {
   private static resources = {
@@ -49,7 +48,7 @@ class PokemonApi {
       offset,
       limit,
     })
-    const { results } = await data
+    const { results } = data
     return this.setData(results)
   }
 
@@ -61,7 +60,6 @@ class PokemonApi {
 
   static async allPokemonByColor(color: string) {
     const url = `${this.baseUrl}${this.resources.PokemonColor}/${color}`
-    console.log('WHAT IS THE URL', url)
     const { pokemon_species } =
       await fetchPokemonApiData<AllPokemonByColorResponse>(url)
     return pokemon_species
@@ -73,7 +71,7 @@ class PokemonApi {
       offset,
       limit,
     })
-    const { results } = await data
+    const { results } = data
     return this.setData(results)
   }
 
@@ -95,7 +93,7 @@ class PokemonApi {
       offset,
       limit,
     })
-    const { results } = await data
+    const { results } = data
     return this.setData(results)
   }
 }

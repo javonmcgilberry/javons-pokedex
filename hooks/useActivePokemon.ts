@@ -9,6 +9,7 @@ const useActivePokemon = () => {
   const { data, isLoading } = useGetPokemonByNameOrIdQuery({
     id: activePokemonData as string,
   })
+
   const activePokemon = data?.pokemonById
 
   const handlePagination = useMemo(() => {

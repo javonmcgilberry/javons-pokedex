@@ -50,6 +50,34 @@ class PokemonDataModel {
     return this.pokemon?.id as string
   }
 
+  private mapImages(
+    evolutionsArray: GetPokemonByNameOrIdQuery['pokemonById'][]
+  ) {
+    return evolutionsArray
+      .map((pokemon) => ({
+        ...pokemon,
+        image: pokemon?.sprites?.other?.official_artwork?.front_default,
+      }))
+      .filter((pokemon) => pokemon.image !== undefined)
+  }
+
+  private getEvolution(pokemon: GetPokemonByNameOrIdQuery['pokemonById']) {
+    const evolutionsArray = [pokemon?.species?.evolution_chain?.species]
+    const evolutions = pokemon?.species?.evolution_chain?.evolves_to
+    if (pokemon?.species?.evolution_chain?.evolves_to?.length === 0)
+      return this.mapImages(evolutionsArray)
+    if (evolutions) {
+      for (const pokemon of evolutions) {
+        evolutionsArray.push(pokemon?.species)
+        if (pokemon?.evolves_to) {
+          evolutionsArray.push(pokemon.evolves_to[0]?.species)
+        }
+      }
+    }
+
+    return this.mapImages(evolutionsArray)
+  }
+
   private getTypeColor(type: string | undefined) {
     return `bg-${type}`
   }
@@ -103,9 +131,7 @@ class PokemonDataModel {
     if (!this.pokemon?.height) {
       return ''
     }
-    const height = parseFloat(
-      ((this.pokemon?.height as number) * 0.1).toFixed(2)
-    )
+    const height = parseFloat((this.pokemon?.height * 0.1).toFixed(2))
     return `${(height * this.metersToFeet).toFixed(2)}ft (${height}m)`
   }
 
@@ -113,10 +139,8 @@ class PokemonDataModel {
     if (!this.pokemon?.weight) {
       return ''
     }
-    const kilos = parseFloat(
-      ((this.pokemon?.weight as number) * 0.1).toFixed(2)
-    )
-    const weight = this.kToLbs(this.pokemon?.weight as number)
+    const kilos = parseFloat((this.pokemon?.weight * 0.1).toFixed(2))
+    const weight = this.kToLbs(this.pokemon?.weight)
     return `${(0.1 * weight.pounds).toFixed(2)}lbs ${weight.ounces.toFixed(
       2
     )}oz (${kilos} kg)`
@@ -147,30 +171,8 @@ class PokemonDataModel {
       move: move?.move?.name as string,
       power: move?.move?.power as number,
       type: move?.move?.type?.name as string,
-      typeIcon: `/assets/icons/${move?.move?.type?.name}.svg` as string,
+      typeIcon: `/assets/icons/${move?.move?.type?.name}.svg`,
     }))
-  }
-
-  private getEvolution(pokemon: GetPokemonByNameOrIdQuery['pokemonById']) {
-    const evolutionsArray = [pokemon?.species?.evolution_chain?.species]
-    const evolutions = pokemon?.species?.evolution_chain?.evolves_to
-    if (pokemon?.species?.evolution_chain?.evolves_to?.length === 0)
-      return evolutionsArray
-    if (evolutions) {
-      for (const pokemon of evolutions) {
-        evolutionsArray.push(pokemon?.species)
-        if (pokemon?.evolves_to) {
-          evolutionsArray.push(pokemon.evolves_to[0]?.species)
-        }
-      }
-    }
-
-    return evolutionsArray
-      .map((pokemon) => ({
-        ...pokemon,
-        image: pokemon?.sprites?.other?.official_artwork?.front_default,
-      }))
-      .filter((pokemon) => pokemon.image !== undefined)
   }
 
   get evolutions() {

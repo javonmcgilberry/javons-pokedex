@@ -1,7 +1,6 @@
 import DataLoader from 'dataloader'
 import { BASE_URL } from '../consts/consts'
-import { GraphQLContext } from '../types/IPokemon'
-import { IPokemon } from '../types/IPokemon'
+import { GraphQLContext, IPokemon } from '../types/IPokemon'
 
 const getPokemonById = async (id: string): Promise<IPokemon> => {
   try {
@@ -18,7 +17,7 @@ const getPokemonById = async (id: string): Promise<IPokemon> => {
 }
 
 const getPokemonByIds = async (ids: readonly string[]) => {
-  return ids.map(async (id) => await getPokemonById(id))
+  return ids.map(async (id) => getPokemonById(id))
 }
 
 export const loadData = async (

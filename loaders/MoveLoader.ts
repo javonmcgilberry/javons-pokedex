@@ -1,4 +1,4 @@
-import PokemonApi from '@pokedex/utils/PokemonApi'
+import PokemonApi from '@pokedex/api-utils/PokemonApi'
 import DataLoader from 'dataloader'
 import { GraphQLContext, IResult, IMoveDetails } from '../types/IPokemon'
 
