@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && mkdir /graphql && mkdir ./vercel/output/graphql",
+    "build": "next build && mkdir /graphql && mkdir /vercel/output/graphql",
     "start": "next start",
     "lint": "next lint",
     "test": "NODE_ENV=test jest --coverage",
