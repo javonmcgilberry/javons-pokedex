@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && cp -r ./graphql/typedefs/ /vercel/output/",
     "start": "next start",
     "lint": "next lint",
     "test": "NODE_ENV=test jest --coverage",
