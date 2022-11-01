@@ -1,0 +1,37 @@
+type PokemonSpecies {
+  base_happiness: Int
+  capture_rate: Int
+  genera: [Genera]
+  evolution_chain: Chain
+}
+
+type Genera {
+  genus: String
+  language: LanguageDetails
+}
+
+type LanguageDetails {
+  name: String
+  url: String
+}
+
+type Chain {
+  evolves_to: [EvolvesToDetails]
+  is_baby: Boolean
+  species: Pokemon
+}
+
+type EvolvesToDetails {
+  evolution_details: EvolutionDetails
+  evolves_to: [EvolvesToDetails]
+  species: Pokemon
+}
+
+type EvolutionDetails {
+  item: EvolutionItem
+}
+
+type EvolutionItem {
+  name: String
+  url: String
+}

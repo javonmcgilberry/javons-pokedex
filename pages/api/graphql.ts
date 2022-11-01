@@ -6,17 +6,21 @@ import PokemonApi from '../../api-utils/PokemonApi'
 
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { addResolversToSchema } from '@graphql-tools/schema'
-import resolvers from '../../public/graphql/resolvers'
+import resolvers from '../../graphql/resolvers'
 import { PokemonLoader } from '../../loaders/PokemonLoader'
 import { GraphQLContext } from '../../types/IPokemon'
 import { loadSchema } from '@graphql-tools/load'
 import { PokemonSpeciesLoader } from '@pokedex/loaders/PokemonSpeciesLoader'
 import { ChainLoader } from '@pokedex/loaders/ChainLoader'
 import { MoveLoader } from '@pokedex/loaders/MoveLoader'
+import { join } from 'path'
 
-const schema = await loadSchema(`../../graphql/typedefs/*.graphql`, {
-  loaders: [new GraphQLFileLoader()],
-})
+const schema = await loadSchema(
+  join(__dirname, './schema/typedefs/*.graphql'),
+  {
+    loaders: [new GraphQLFileLoader()],
+  }
+)
 
 const schemaWithResolvers = addResolversToSchema({ schema, resolvers })
 
