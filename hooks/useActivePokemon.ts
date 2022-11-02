@@ -17,7 +17,7 @@ const useActivePokemon = () => {
       next: () =>
         setActivePokemonData((prev) => {
           const current = Number(prev)
-          return Math.max(1, current + 1)
+          return Math.max(1, Math.min(905, current + 1))
         }),
       prev: () =>
         setActivePokemonData((prev) => {

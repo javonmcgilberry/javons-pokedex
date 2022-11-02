@@ -5,6 +5,12 @@ import { GraphQLContext } from '../types/IPokemon'
 import { IPokemon } from '../types/IPokemon'
 
 const getPokemonSpeciesById = async (id: string): Promise<IPokemonSpecies> => {
+  /**
+   * only lookup "normal type"
+   */
+  if (id.includes('-')) {
+    id = id.split('-')[0]
+  }
   const responseBody = await fetch(`${BASE_URL}pokemon-species/${id}`)
   const data = (await responseBody.json()) as IPokemonSpecies
   return { ...data, id: data.pokedex_numbers[0].entry_number }

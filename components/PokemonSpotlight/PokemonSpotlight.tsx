@@ -3,7 +3,7 @@ import usePokemonBackgroundColor from '@pokedex/hooks/usePokemonBackgroundColor'
 import PokemonDataModel from '@pokedex/models/PokemonDataModel'
 import { HandleSetActivePokemon } from '@pokedex/types/types'
 import Image from 'next/image'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 import { animated, useSpring } from 'react-spring'
 import { AttributeGroup } from '../AttributeNavigation/AttributeGroup/AttributeGroup'
 import { AttributeNavigation } from '../AttributeNavigation/AttributeNavigation'
@@ -29,16 +29,31 @@ const PokemonSpotlight = ({
   const pokemonData = new PokemonDataModel(pokemon)
   const currentColor = usePokemonBackgroundColor(pokemonData)
   const [fadeIn, set] = useSpring(() => ({ opacity: 0 }))
+  const isInitialMount = useRef(true)
 
   useEffect(() => {
+    isInitialMount.current = false
     if (!isLoading) {
       set({ opacity: 1, from: { opacity: 0 } })
     }
   }, [set, pokemon, isLoading])
 
   return (
-    <div className={`${currentColor} rounded-b-[12rem]`}>
-      <div className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8`}>
+    <div
+      className={`${
+        currentColor ? currentColor : 'bg-slate-400'
+      } rounded-b-[12rem]`}
+    >
+      <div
+        className={`mx-auto h-[80vh]  max-w-7xl px-4 pt-32 sm:px-6 lg:px-8 `}
+      >
+        {isInitialMount.current && isLoading && (
+          <div className="flex h-full w-full justify-center">
+            <h1 className="self-center text-center text-[5rem] capitalize text-white drop-shadow-md">
+              <span className="flex">Loading...</span>
+            </h1>
+          </div>
+        )}
         <animated.div
           style={fadeIn}
           className="flex h-full w-full justify-between"

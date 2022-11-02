@@ -21,7 +21,7 @@ export const PaginationComponent: React.FC<Props> = ({
             style={{
               boxShadow: `transparent 0px 0px 0px 1px, transparent 0px 0px 0px 4px, rgba(0, 0, 0, 0.18) 0px 2px 4px`,
             }}
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             &lt;
           </button>
@@ -36,7 +36,7 @@ export const PaginationComponent: React.FC<Props> = ({
           })}
           onClick={() => handlePagination(1)}
           type="button"
-          className={`mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white ${
+          className={`mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white ${
             page === 1 && ` bg-blue-500`
           }`}
         >
@@ -49,7 +49,7 @@ export const PaginationComponent: React.FC<Props> = ({
           <button
             onClick={() => handlePagination(page - 2)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             {page - 2}
           </button>
@@ -59,7 +59,7 @@ export const PaginationComponent: React.FC<Props> = ({
           <button
             onClick={() => handlePagination(page - 1)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             {page - 1}
           </button>
@@ -72,7 +72,7 @@ export const PaginationComponent: React.FC<Props> = ({
             }}
             onClick={() => handlePagination(page)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-blue-500 bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-blue-500 bg-transparent font-semibold text-white"
           >
             {page}
           </button>
@@ -82,7 +82,7 @@ export const PaginationComponent: React.FC<Props> = ({
           <button
             onClick={() => handlePagination(page + 1)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             {page + 1}
           </button>
@@ -92,7 +92,7 @@ export const PaginationComponent: React.FC<Props> = ({
           <button
             onClick={() => handlePagination(page + 2)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             {page + 2}
           </button>
@@ -108,7 +108,7 @@ export const PaginationComponent: React.FC<Props> = ({
           })}
           onClick={() => handlePagination(totalPages)}
           type="button"
-          className={`mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white ${
+          className={`mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white ${
             page === totalPages && `bg-blue-500`
           } `}
         >
@@ -123,7 +123,7 @@ export const PaginationComponent: React.FC<Props> = ({
             }}
             onClick={() => handlePagination(page + 1)}
             type="button"
-            className="mx-[0.25rem] h-8 w-8 rounded-full border-none bg-transparent font-semibold text-white"
+            className="mx-[0.25rem] h-12 w-12 rounded-full border-none bg-transparent font-semibold text-white"
           >
             &gt;
           </button>

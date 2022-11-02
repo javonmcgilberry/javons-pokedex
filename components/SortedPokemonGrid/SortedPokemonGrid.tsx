@@ -20,7 +20,6 @@ const SortedPokemonGrid = ({
   data,
   handleSetActivePokemon,
 }: ISortedPokemonGrid) => {
-  console.log('SORTED GRID', { data, isLoading, handleSetActivePokemon })
   return (
     <div className="relative grid grid-cols-8 gap-4 drop-shadow-md">
       {isLoading &&
@@ -36,19 +35,21 @@ const SortedPokemonGrid = ({
             ></div>
           </>
         ))}
-      {data?.map(({ pokemon }) => {
-        if (pokemon)
-          return (
-            <PokemonCard
-              handleSetActivePokemon={handleSetActivePokemon}
-              key={pokemon.name}
-              pokemon={pokemon}
-              smallText
-            />
-          )
-      })}
+      {data
+        ?.filter((pokemon) => Number(pokemon.pokemon?.id) <= 905)
+        .map(({ pokemon }) => {
+          if (pokemon)
+            return (
+              <PokemonCard
+                handleSetActivePokemon={handleSetActivePokemon}
+                key={pokemon.name}
+                pokemon={pokemon}
+                smallText
+              />
+            )
+        })}
     </div>
   )
 }
 
-export default memo(SortedPokemonGrid)
+export default SortedPokemonGrid

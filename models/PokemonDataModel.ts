@@ -83,6 +83,12 @@ class PokemonDataModel {
   }
 
   get name() {
+    /**
+     * only lookup "normal type"
+     */
+    if (this.pokemon?.name.includes('-')) {
+      return this.pokemon?.name.split('-')[0]
+    }
     return this.pokemon?.name
   }
 

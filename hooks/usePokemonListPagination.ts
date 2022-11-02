@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 const usePokemonListPagination = () => {
   const [page, setPage] = useState(1)
-  const totalPages = 100
+  const totalPages = 101
   const handlePages = (updatePage: number) => setPage(updatePage)
   const { data: allPokemonData, isLoading: isAllPokemonDataLoading } =
     useGetAllPokemonSpeciesQuery({
